@@ -9,5 +9,5 @@ public class SuperpolloApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SuperpolloApplication.class, args);
 	}
-
+	
 }
