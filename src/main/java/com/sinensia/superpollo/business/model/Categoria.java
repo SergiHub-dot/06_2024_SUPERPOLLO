@@ -3,6 +3,8 @@ package com.sinensia.superpollo.business.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+// Jordi
+
 public class Categoria implements Serializable{
 
 	private Long id;
