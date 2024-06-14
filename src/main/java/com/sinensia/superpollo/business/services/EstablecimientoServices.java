@@ -18,4 +18,5 @@ public interface EstablecimientoServices {
 	Optional<Establecimiento> read(Long codigo);
 	
 	List<Establecimiento> getAll();
+
 }
