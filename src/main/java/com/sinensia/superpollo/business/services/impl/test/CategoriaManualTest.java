@@ -7,7 +7,7 @@ import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.services.CategoriaServices;
 import com.sinensia.superpollo.business.services.impl.CategoriaServicesImpl;
 
-public class CategoriaTest {
+public class CategoriaManualTest {
 
 	public static void main(String[] args) {
 		
@@ -17,7 +17,7 @@ public class CategoriaTest {
 		
 		Categoria nuevaCategoria = new Categoria();
 		nuevaCategoria.setId(null);
-		nuevaCategoria.setNombre("NUEVA CATGORIA!");
+		nuevaCategoria.setNombre("NUEVA CATEGORIA!");
 		
 		Long id = categoriaServices.create(nuevaCategoria);
 		
@@ -27,10 +27,17 @@ public class CategoriaTest {
 		
 		// Probamos metodo2
 		
-		Optional<Categoria> optional = categoriaServices.read(100L);
+		Optional<Categoria> optional1 = categoriaServices.read(101L);
 		
-		if(optional.isPresent()) {
-			System.out.println(optional.get()); 
+		if(optional1.isPresent()) {
+			Categoria categoria = optional1.get();
+			System.out.println(categoria); 
+		}
+		
+		Optional<Categoria> optional2 = categoriaServices.read(15L);
+		
+		if(optional2.isEmpty()) {
+			System.out.println("No existe la categoría 15");
 		}
 			
 		// ******************************************************************

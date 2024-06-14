@@ -1,5 +1,6 @@
 package com.sinensia.superpollo.business.services.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,20 +19,54 @@ public class CategoriaServicesImpl implements CategoriaServices {
 	
 	@Override
 	public Long create(Categoria categoria) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(categoria.getId() != null) {
+			throw new IllegalStateException("La categoría " + categoria.getNombre() +" ya tiene id. No se puede crear.");
+		}
+
+		Long maximoId = 0L;
+		
+		for(Long clave: BASE_DATOS_CATEGORIAS.keySet()) {
+			if (clave > maximoId) {
+				maximoId = clave;
+			}
+		}
+		
+		Long nuevoId = maximoId + 1;
+		
+		categoria.setId(nuevoId);
+		
+		BASE_DATOS_CATEGORIAS.put(categoria.getId(), categoria);
+		
+		return nuevoId;
 	}
 
 	@Override
 	public Optional<Categoria> read(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+	
+		return Optional.ofNullable(BASE_DATOS_CATEGORIAS.get(id));
+		
+		/*
+		if(BASE_DATOS_CATEGORIAS.containsKey(id)) {
+			Categoria categoria = BASE_DATOS_CATEGORIAS.get(id);
+			return Optional.of(categoria);
+		} else {
+			return Optional.empty();
+		}
+		*/
+	
 	}
 
 	@Override
 	public List<Categoria> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Categoria> categorias = new ArrayList<>();
+		
+		for(Categoria categoria: BASE_DATOS_CATEGORIAS.values()) {
+			categorias.add(categoria);
+		}
+		
+		return categorias;
 	}
 
 	// **********************************************************
@@ -47,16 +82,16 @@ public class CategoriaServicesImpl implements CategoriaServices {
 		Categoria categoria3 = new Categoria();
 		Categoria categoria4 = new Categoria();
 		
-		categoria1.setId(100L);
+		categoria1.setId(101L);
 		categoria1.setNombre("TAPAS");
 		
-		categoria2.setId(101L);
+		categoria2.setId(102L);
 		categoria2.setNombre("REFRESCOS");
 		
-		categoria3.setId(102L);
+		categoria3.setId(103L);
 		categoria3.setNombre("INFUSIONES");
 		
-		categoria4.setId(103L);
+		categoria4.setId(104L);
 		categoria4.setNombre("BOLLERIA");
 		
 		BASE_DATOS_CATEGORIAS.put(categoria1.getId(), categoria1);
