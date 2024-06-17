@@ -146,20 +146,55 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public void variarPrecio(List<Producto> productos, double porcentaje) {
-		// TODO Auto-generated method stub
 		
+		for(Producto producto: productos) {
+			if(!BASE_DATOS_PRODUCTOS.containsKey(producto.getCodigo())) {
+				throw new IllegalArgumentException("No existe el producto " + producto.getCodigo());
+			}
+		}
+		
+		for(Producto producto: productos) {
+			Producto productoGuardado = BASE_DATOS_PRODUCTOS.get(producto.getCodigo());
+			double precio = productoGuardado.getPrecio();
+			double nuevoPrecio =  precio + (precio * porcentaje / 100);
+			productoGuardado.setPrecio(nuevoPrecio);
+		}	
 	}
 
 	@Override
 	public void variarPrecio(long[] codigos, double porcentaje) {
-		// TODO Auto-generated method stub
 		
+		for(Long codigo: codigos) {
+			if(!BASE_DATOS_PRODUCTOS.containsKey(codigo)) {
+				throw new IllegalArgumentException("No existe el producto " + codigo);
+			}
+		}
+		
+		for(Long codigo: codigos) {
+			Producto productoGuardado = BASE_DATOS_PRODUCTOS.get(codigo);
+			double precio = productoGuardado.getPrecio();
+			double nuevoPrecio =  precio + (precio * porcentaje / 100);
+			productoGuardado.setPrecio(nuevoPrecio);
+		}
 	}
 
 	@Override
 	public Map<Categoria, Integer> getEstadisticaNumeroProductosPorCategoria() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Map<Categoria, Integer> resultados = new HashMap<>();
+		
+		for(Producto producto: BASE_DATOS_PRODUCTOS.values()) {
+			
+			Categoria categoria = producto.getCategoria();
+			
+			if(!resultados.containsKey(categoria)) {
+				resultados.put(categoria, 1);
+			} else {
+				resultados.replace(categoria, resultados.get(categoria) + 1);
+			}
+		}
+		
+		return resultados;
 	}
 
 	@Override
@@ -187,17 +222,20 @@ public class ProductoServicesImpl implements ProductoServices {
 		
 		Date fecha1 = null;
 		Date fecha2 = null;
+		Date fecha3 = null;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		try {
 			fecha1 = sdf.parse("24/08/2016");
 			fecha2 = sdf.parse("26/08/2016");
+			fecha3 = sdf.parse("27/08/2016");
 		} catch (ParseException e) {
 			
 		}
 		
 		Producto producto1 = new Producto();
+		producto1.setCodigo(101L);
 		producto1.setCategoria(categoria1);
 		producto1.setFechaAlta(fecha1);
 		producto1.setNombre("Cocacola Zero");
@@ -206,6 +244,7 @@ public class ProductoServicesImpl implements ProductoServices {
 		producto1.setDescatalogado(false);
 		
 		Producto producto2 = new Producto();
+		producto2.setCodigo(102L);
 		producto2.setCategoria(categoria2);
 		producto2.setFechaAlta(fecha2);
 		producto2.setNombre("Patas Bravas");
@@ -213,8 +252,18 @@ public class ProductoServicesImpl implements ProductoServices {
 		producto2.setPrecio(7.0);
 		producto2.setDescatalogado(false);
 		
+		Producto producto3 = new Producto();
+		producto3.setCodigo(103L);
+		producto3.setCategoria(categoria2);
+		producto3.setFechaAlta(fecha3);
+		producto3.setNombre("Patas Bravas Light");
+		producto3.setDescripcion("Deliciosas patatas sin salsa");
+		producto3.setPrecio(6.0);
+		producto3.setDescatalogado(false);
+		
 		BASE_DATOS_PRODUCTOS.put(producto1.getCodigo(), producto1);
 		BASE_DATOS_PRODUCTOS.put(producto2.getCodigo(), producto2);
+		BASE_DATOS_PRODUCTOS.put(producto3.getCodigo(), producto3);
 		
 	}
 
