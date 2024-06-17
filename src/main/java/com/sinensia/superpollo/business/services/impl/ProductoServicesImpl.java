@@ -127,14 +127,21 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public List<Producto> getByCategoria(Categoria categoria) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Producto> productos = new ArrayList<>();
+		
+		for(Producto producto: BASE_DATOS_PRODUCTOS.values()) {
+			if(producto.getCategoria().equals(categoria)) {
+				productos.add(producto);
+			}
+		}
+		
+		return productos;
 	}
 
 	@Override
 	public int getNumeroTotalProductos() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BASE_DATOS_PRODUCTOS.size();
 	}
 
 	@Override
