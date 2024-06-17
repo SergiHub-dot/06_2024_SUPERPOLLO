@@ -43,18 +43,7 @@ public class CategoriaServicesImpl implements CategoriaServices {
 
 	@Override
 	public Optional<Categoria> read(Long id) {
-	
 		return Optional.ofNullable(BASE_DATOS_CATEGORIAS.get(id));
-		
-		/*
-		if(BASE_DATOS_CATEGORIAS.containsKey(id)) {
-			Categoria categoria = BASE_DATOS_CATEGORIAS.get(id);
-			return Optional.of(categoria);
-		} else {
-			return Optional.empty();
-		}
-		*/
-	
 	}
 
 	@Override
