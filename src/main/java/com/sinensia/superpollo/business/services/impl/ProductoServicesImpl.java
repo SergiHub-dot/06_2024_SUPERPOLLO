@@ -199,8 +199,30 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public Map<Categoria, Double> getEstadisticaPrecioMedioProductosPorCategoria() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Map<Categoria, Double> resultadosMap = new HashMap<>();
+		Map<Categoria, Integer> numeroProductosMap = new HashMap<>();
+		
+		for(Producto producto: BASE_DATOS_PRODUCTOS.values()) {
+			Categoria categoria = producto.getCategoria();
+			if(resultadosMap.containsKey(categoria)) {
+				double importeAcumulado = resultadosMap.get(categoria);
+				int numeroProductos = numeroProductosMap.get(categoria);
+				resultadosMap.replace(categoria, importeAcumulado + producto.getPrecio());
+				numeroProductosMap.replace(categoria, numeroProductos + 1);
+			} else {
+				resultadosMap.put(categoria, producto.getPrecio());
+				numeroProductosMap.put(categoria, 1);
+			}
+		}
+		
+		for(Categoria categoria: resultadosMap.keySet()) {
+			double importeAcumulado = resultadosMap.get(categoria);
+			int numeroProductos = numeroProductosMap.get(categoria);
+			resultadosMap.replace(categoria, importeAcumulado / numeroProductos);
+		}
+		
+		return resultadosMap;
 	}
 	
 	// **********************************************************
