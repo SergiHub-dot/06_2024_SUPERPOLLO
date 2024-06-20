@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.services.CategoriaServices;
 
+@Service
 public class CategoriaServicesImpl implements CategoriaServices {
 
 	private final Map<Long, Categoria> BASE_DATOS_CATEGORIAS = new HashMap<>();
