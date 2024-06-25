@@ -27,10 +27,7 @@ public class CategoriaController {
 	
 	@GetMapping
 	public List<Categoria> getAll(){
-		
-		List<Categoria> categorias = categoriaServices.getAll();
-		
-		return categorias;
+		return categoriaServices.getAll();
 	}
 	
 	@GetMapping("/{id}")
@@ -48,7 +45,15 @@ public class CategoriaController {
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Categoria categoria, UriComponentsBuilder ucb) {
 		
-		Long id = categoriaServices.create(categoria);
+		Long id = null;
+		
+		try {
+		
+			id = categoriaServices.create(categoria);
+		
+		} catch(IllegalStateException e) {
+			return ResponseEntity.badRequest().body(new ErrorHttpCustomizado(e.getMessage()));
+		}
 		
 		URI uri = ucb.path("/categorias/{id}").build(id);
 		

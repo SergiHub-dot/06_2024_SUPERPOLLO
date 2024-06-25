@@ -9,10 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
 
+@Service
 public class ProductoServicesImpl implements ProductoServices {
 	
 	private final Map<Long, Producto> BASE_DATOS_PRODUCTOS = new HashMap<>();
