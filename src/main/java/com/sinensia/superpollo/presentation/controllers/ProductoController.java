@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
+import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @RestController
 @RequestMapping("/productos")
@@ -72,9 +73,7 @@ public class ProductoController {
 		
 		return ResponseEntity.created(uri).build();
 	}
-	
-	// http://localhost:8080/productos/2445
-	
+		
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<?> delete(@PathVariable Long codigo) {
 		

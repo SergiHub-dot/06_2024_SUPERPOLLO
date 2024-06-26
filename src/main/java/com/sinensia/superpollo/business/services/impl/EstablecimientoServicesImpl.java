@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.sinensia.superpollo.business.model.DatosContacto;
 import com.sinensia.superpollo.business.model.Direccion;
 import com.sinensia.superpollo.business.model.Establecimiento;
 import com.sinensia.superpollo.business.services.EstablecimientoServices;
 
+@Service
 public class EstablecimientoServicesImpl implements EstablecimientoServices {
 
 	private final Map<Long, Establecimiento> BASE_DATOS_ESTABLECIMIENTOS = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.sinensia.superpollo.presentation.controllers;
+package com.sinensia.superpollo.presentation.config;
 
 public class ErrorHttpCustomizado {
 

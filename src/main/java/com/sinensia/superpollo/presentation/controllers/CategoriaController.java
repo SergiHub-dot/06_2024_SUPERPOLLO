@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.services.CategoriaServices;
+import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @RestController
 @RequestMapping("/categorias")
@@ -26,7 +27,7 @@ public class CategoriaController {
 	private CategoriaServices categoriaServices;
 	
 	@GetMapping
-	public List<Categoria> getAll(){
+	public List<Categoria> getCategorias(){
 		return categoriaServices.getAll();
 	}
 	
