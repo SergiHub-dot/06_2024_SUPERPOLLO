@@ -1,4 +1,4 @@
-package com.sinensia.superpollo.presentation.controllers;
+package com.sinensia.superpollo.presentation.restcontrollers;
 
 import java.util.List;
 import java.util.Optional;
