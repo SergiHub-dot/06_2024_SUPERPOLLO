@@ -2,6 +2,9 @@ package com.sinensia.superpollo.business.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Direccion implements Serializable{
 
 	private String direccion;
