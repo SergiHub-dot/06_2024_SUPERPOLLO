@@ -1,15 +1,17 @@
-package com.sinensia.superpollo.business.services.impl;
+package com.sinensia.superpollo.business.services.dummy.impl;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.services.PedidoServices;
 
 @Service
-public class PedidoServicesImpl implements PedidoServices{
+@Primary
+public class PedidoDummyServicesImpl implements PedidoServices {
 
 	@Override
 	public Long create(Pedido pedido) {
