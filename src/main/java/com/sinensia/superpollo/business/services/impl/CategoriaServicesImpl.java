@@ -10,6 +10,8 @@ import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.services.CategoriaServices;
 import com.sinensia.superpollo.integration.repositories.CategoriaRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CategoriaServicesImpl implements CategoriaServices{
 
@@ -17,8 +19,13 @@ public class CategoriaServicesImpl implements CategoriaServices{
 	private CategoriaRepository categoriaRepository;
 	
 	@Override
+	@Transactional
 	public Long create(Categoria categoria) {
-		// TODO Auto-generated method stub
+		
+		if(categoria.getId() != null) {
+			throw new IllegalStateException("La categoría " + categoria.getNombre() +" ya tiene id. No se puede crear.");
+		}
+		
 		return null;
 	}
 
