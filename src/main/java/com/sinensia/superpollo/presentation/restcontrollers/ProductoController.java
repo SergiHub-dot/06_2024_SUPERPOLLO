@@ -94,6 +94,7 @@ public class ProductoController {
 		try {
 			productoServices.update(producto);
 		} catch(Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el producto " + producto.getCodigo()), HttpStatus.NOT_FOUND);
 		}
 		

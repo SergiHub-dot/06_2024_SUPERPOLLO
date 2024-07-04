@@ -62,7 +62,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/categorias/101",
+							"raw": "http://localhost:8080/categorias/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -70,7 +70,7 @@
 							"port": "8080",
 							"path": [
 								"categorias",
-								"101"
+								"10"
 							]
 						}
 					},
@@ -87,7 +87,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/productos?min=6&max=100",
+							"raw": "http://localhost:8080/productos",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -99,11 +99,13 @@
 							"query": [
 								{
 									"key": "min",
-									"value": "6"
+									"value": "6",
+									"disabled": true
 								},
 								{
 									"key": "max",
-									"value": "100"
+									"value": "100",
+									"disabled": true
 								}
 							]
 						}
@@ -116,7 +118,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/productos/45566",
+							"raw": "http://localhost:8080/productos/107",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -124,7 +126,7 @@
 							"port": "8080",
 							"path": [
 								"productos",
-								"45566"
+								"107"
 							],
 							"query": [
 								{
@@ -149,7 +151,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"PRODUCTO CREADO DESDE POSTMAN\",\r\n    \"descripcion\": \"Deliciosas patatas\",\r\n    \"fechaAlta\": \"2016-08-25T22:00:00.000+00:00\",\r\n    \"precio\": 7.0,\r\n    \"categoria\": {\r\n        \"id\": 102,\r\n        \"nombre\": \"TAPA\"\r\n    },\r\n    \"descatalogado\": false\r\n}",
+							"raw": "{\r\n    \"nombre\": \"TAPA JSON DE POSTMAN\",\r\n    \"descripcion\": \"Deliciosa tapa de JSONES\",\r\n    \"fechaAlta\": \"2016-08-25T22:00:00.000+00:00\",\r\n    \"precio\": 7.0,\r\n    \"categoria\": {\r\n        \"id\": 10\r\n    },\r\n    \"descatalogado\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,7 +211,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"codigo\": 103,\r\n    \"nombre\": \"XXXXX\",\r\n    \"descripcion\": \"Deliciosas patatas sin salsa\",\r\n    \"fechaAlta\": \"2016-08-26T22:00:00.000+00:00\",\r\n    \"precio\": 6.0,\r\n    \"categoria\": {\r\n        \"id\": 102,\r\n        \"nombre\": \"TAPA\"\r\n    },\r\n     \"descatalogado\": false\r\n}",
+							"raw": "{\r\n    \"codigo\": 100,\r\n    \"nombre\": \"PRODUCTO XXXXXX ACTUALIZADO\",\r\n    \"descripcion\": \"Deliciosas patatas sin salsa\",\r\n    \"fechaAlta\": \"2016-08-26T22:00:00.000+00:00\",\r\n    \"precio\": 6.0,\r\n    \"categoria\": {\"id\": 10},\r\n    \"descatalogado\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -234,7 +236,147 @@
 		},
 		{
 			"name": "Establecimientos",
-			"item": []
+			"item": [
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/establecimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"establecimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREACION",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"codigo\":null,\r\n    \"nombreComercial\": \"Girona CREADO DESDE POSTMAN\",\r\n    \"direccion\": {\r\n        \"direccion\": \"c/ Pino, 234\",\r\n        \"poblacion\": \"Barcelona\",\r\n        \"codigoPostal\": \"08020\",\r\n        \"provincia\": \"Barcelona\",\r\n        \"pais\": \"España\"\r\n    },\r\n    \"datosContacto\": {\r\n        \"telefono\": \"93 220 90 90\",\r\n        \"fax\": null,\r\n        \"email\": \"granvia@superpollos.com\"\r\n    },\r\n    \"fechaInauguracion\": \"2019-10-22T22:00:00.000+00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/establecimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"establecimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY CODIGO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/establecimientos/101",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"establecimientos",
+								"101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY NUMERO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pedidos/1000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos",
+								"1000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fechaHora\": \"2023-06-17T07:07:23.069+00:00\",\r\n    \"establecimiento\": {\"codigo\": 100},\r\n    \"observaciones\": \"No poner hielo en las bebidas\",\r\n    \"lineasDetalle\": [\r\n        {\r\n            \"producto\": {\"codigo\": 100},\r\n            \"cantidad\": 2,\r\n            \"precio\": 6.0\r\n        },\r\n        {\r\n            \"producto\": {\"codigo\": 103},\r\n            \"cantidad\": 8,\r\n            \"precio\": 3.0\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
