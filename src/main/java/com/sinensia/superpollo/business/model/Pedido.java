@@ -5,12 +5,37 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
+@Table(name="PEDIDOS")
 public class Pedido implements Serializable {
 
+	@Id
+	@Column(name="CODIGO")
 	private Long numero;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaHora;
+	
+	@ManyToOne
+	@JoinColumn(name="CODIGO_ESTABLECIMIENTO")
 	private Establecimiento establecimiento;
+	
+	@Column(name="COMENTARIO")
 	private String observaciones;
+	
+	@ElementCollection
+	@JoinTable(name="LINEAS_PEDIDO", joinColumns = @JoinColumn(name="CODIGO_PEDIDO"))
 	private List<LineaDetalle> lineasDetalle;
 	
 	public Pedido() {

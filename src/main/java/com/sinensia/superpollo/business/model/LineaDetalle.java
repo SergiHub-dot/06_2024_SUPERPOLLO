@@ -2,9 +2,17 @@ package com.sinensia.superpollo.business.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Embeddable
 public class LineaDetalle implements Serializable {
 
+	@ManyToOne
+	@JoinColumn(name="CODIGO_PRODUCTO")
 	private Producto producto;
+	
 	private int cantidad;
 	private double precio;
 	

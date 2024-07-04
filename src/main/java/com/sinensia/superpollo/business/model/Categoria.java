@@ -3,6 +3,7 @@ package com.sinensia.superpollo.business.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,6 +15,7 @@ public class Categoria implements Serializable{
 	@Id
 	private Long id;
 	
+	@Column(name="NAME")
 	private String nombre;
 	
 	public Categoria() {
