@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
 import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
+import com.sinensia.superpollo.presentation.config.PresentationException;
 
 @RestController
 @RequestMapping("/productos")
@@ -75,30 +77,28 @@ public class ProductoController {
 	}
 		
 	@DeleteMapping("/{codigo}")
-	public ResponseEntity<?> delete(@PathVariable Long codigo) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable Long codigo) {
 		
 		try {
 			productoServices.delete(codigo);
+		} catch(IllegalStateException e) {
+			throw new PresentationException("No se encuentra el producto " + codigo, HttpStatus.NOT_FOUND);
 		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el producto " + codigo), HttpStatus.NOT_FOUND);
+			throw new PresentationException("Ha habido un problema en la petición. ", HttpStatus.BAD_REQUEST);
 		}
-		
-		return ResponseEntity.noContent().build();
-	
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> update(@RequestBody Producto producto){
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void update(@RequestBody Producto producto){
 		
 		try {
 			productoServices.update(producto);
+		} catch(IllegalStateException e) {
+			throw new PresentationException("No se encuentra el producto " + producto.getCodigo(), HttpStatus.NOT_FOUND);
 		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el producto " + producto.getCodigo()), HttpStatus.NOT_FOUND);
-		}
-		
-		return ResponseEntity.noContent().build();
+			throw new PresentationException("Ha habido un problema en la petición. ", HttpStatus.BAD_REQUEST);
+		}	
 	}
-
 }

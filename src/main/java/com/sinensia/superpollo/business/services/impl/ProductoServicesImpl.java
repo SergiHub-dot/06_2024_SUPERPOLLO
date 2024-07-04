@@ -56,6 +56,13 @@ public class ProductoServicesImpl implements ProductoServices {
 	@Override
 	@Transactional
 	public void delete(Long codigo) {
+		
+		boolean existe = productoRepository.existsById(codigo);
+		
+		if(!existe) {
+			throw new IllegalStateException("No existe el producto con código " + codigo);
+		}
+		
 		productoRepository.deleteById(codigo);	
 	}
 
