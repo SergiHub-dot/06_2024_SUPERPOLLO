@@ -1,4 +1,4 @@
-INSERT INTO CATEGORIAS (ID, NOMBRE) VALUES
+INSERT INTO CATEGORIAS (ID, NAME) VALUES
 (1, 'LICOR'),
 (2, 'REFRESCO'),
 (3, 'CERVEZA'),
@@ -98,6 +98,36 @@ INSERT INTO ESTABLECIMIENTOS (CODIGO,
 (100, 'Gran Via 2', 'Gran Via de Les Corts Catalanes, 345', 'Barcelona', 'Barcelona','08034', 'España', '+34 932247078', null, 'granvia2@pollosfelices.com', '2003-10-20'),
 (101, 'Vaguada', 'Av. de Monforte de Lemos, 36', 'Madrid', 'Madrid','28029', 'España', '+34 913682828', '620897644', 'lavaguada@pollosfelices.com', '2011-08-14');
 
+INSERT INTO PERSONAS(CODIGO, 
+					 DNI,
+					 NOMBRE,
+					 APELLIDO1,
+					 APELLIDO2,
+					 DIRECCION,
+					 POBLACION,
+					 CODIGO_POSTAL,
+					 PROVINCIA,
+					 PAIS,
+					 TELEFONO,
+					 FAX,
+					 EMAIL) VALUES
+(10, '45899812L', 'Marta', 'Quesada', 'Olmos', 'c/Marina, 234 2º 1ª', 'Barcelona', '08014', 'Barcelona', 'España', '932318811', null, 'apax344@hotmail.com'),
+(11, '30092765K', 'José Ramón', 'Peña', 'Ojeda', 'c/Muntaner, 230 ', 'Barcelona', '08020', 'Barcelona', 'España', '93 2209088', '620109034', 'jr200@gmail.com'),
+(12, '45011723P', 'Carlos Jesús', 'Olmedo', 'Cierco', null, 'Madrid', null, 'Madrid', 'España', null, null, 'carlosj20@gmail.com'),
+(13, 'X58993234', 'Walter', 'Peralta', null, 'c/ Juan Soldevila, 34 ático 1', 'Teruel', '28933', 'Teruel', 'España', '982209090', null, 'jsprod34@hotmail.com'),
+(14, '40922311S', 'Anna', 'Balcells', 'Rius', 'Avda. Del Roble, 230', 'Santa Coloma de Gramanet', '08921', 'Barcelona', 'España', '934567809', '609908756', 'balc.rius@hotmail.com'),
+(15, '30998123T', 'Enric', 'Balcells', 'Rius', 'c/ Republica 201', 'Barcelona', '08003', 'Barcelona', 'España', '932209012', null, 'enric.enric@hotmail.com');
+
+INSERT INTO CLIENTES(CODIGO_CLIENTE, GOLD) VALUES
+(10, true),
+(12, false);
+
+INSERT INTO CAMAREROS(CODIGO_CAMARERO, LICENCIA_MANIPULADOR_ALIMENTOS) VALUES
+(11, 'LMA200912T'),
+(13, 'LMA009200S'),
+(14, 'LMA201222R'),
+(15, 'LMA200001T');
+
 INSERT INTO PEDIDOS (CODIGO, FECHA_HORA, CODIGO_CAMARERO, ESTADO, CODIGO_CLIENTE, CODIGO_ESTABLECIMIENTO) VALUES
 (1000, '2023-04-17 09:01:42.069', 11, 'SERVIDO', null, 100),
 (1001, '2023-04-17 09:05:13.012', 13, 'SERVIDO', null, 101),
@@ -169,4 +199,3 @@ INSERT INTO LINEAS_PEDIDO (CODIGO_PEDIDO, CODIGO_PRODUCTO, CANTIDAD, PRECIO) VAL
 (1014, 166, 1, 2.7),
 (1014, 156, 3, 1.5),
 (1014, 102, 2, 2.5);
-
