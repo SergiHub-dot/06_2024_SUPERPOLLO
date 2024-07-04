@@ -42,6 +42,13 @@ public class PedidoServicesImpl implements PedidoServices{
 	@Override
 	@Transactional
 	public void delete(Long numero) {
+		
+		boolean existe = pedidoRepository.existsById(numero);
+		
+		if(!existe) {
+			throw new IllegalStateException("No existe el pedido número " + numero);
+		}
+		
 		pedidoRepository.deleteById(numero);	
 	}
 
