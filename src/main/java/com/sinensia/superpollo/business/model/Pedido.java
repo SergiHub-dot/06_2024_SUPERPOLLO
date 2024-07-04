@@ -8,6 +8,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -21,6 +22,7 @@ import jakarta.persistence.TemporalType;
 public class Pedido implements Serializable {
 
 	@Id
+	@GeneratedValue(generator="PEDIDO_SEQ")
 	@Column(name="CODIGO")
 	private Long numero;
 	

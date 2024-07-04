@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -16,6 +17,7 @@ import jakarta.persistence.TemporalType;
 public class Establecimiento implements Serializable {
 
 	@Id
+	@GeneratedValue(generator="ESTABLECIMIENTO_SEQ")
 	private Long codigo;
 	
 	private String nombreComercial;

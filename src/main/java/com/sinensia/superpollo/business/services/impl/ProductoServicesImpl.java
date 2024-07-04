@@ -5,43 +5,63 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
+import com.sinensia.superpollo.integration.repositories.ProductoRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductoServicesImpl implements ProductoServices {
 
+	@Autowired
+	private ProductoRepository productoRepository;
+	
 	@Override
+	@Transactional
 	public Long create(Producto producto) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(producto.getCodigo() != null) {
+			throw new IllegalStateException("El código de producto no es null. No se puede crear.");
+		}
+		
+		Producto createdProducto = productoRepository.save(producto);
+		
+		return createdProducto.getCodigo();
 	}
 
 	@Override
 	public Optional<Producto> read(Long codigo) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return productoRepository.findById(codigo);
 	}
 
 	@Override
+	@Transactional
 	public void update(Producto producto) {
-		// TODO Auto-generated method stub
+		
+		boolean existe = productoRepository.existsById(producto.getCodigo());
+		
+		if(!existe) {
+			throw new IllegalStateException("El producto " + producto.getCodigo() + " no existe. No se puede actualizar.");
+		}
+		
+		productoRepository.save(producto);
 		
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long codigo) {
-		// TODO Auto-generated method stub
-		
+		productoRepository.deleteById(codigo);	
 	}
 
 	@Override
 	public List<Producto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return productoRepository.findAll();
 	}
 
 	@Override
@@ -70,8 +90,7 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public int getNumeroTotalProductos() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) productoRepository.count();
 	}
 
 	@Override

@@ -26,7 +26,9 @@ public class CategoriaServicesImpl implements CategoriaServices{
 			throw new IllegalStateException("La categoría " + categoria.getNombre() +" ya tiene id. No se puede crear.");
 		}
 		
-		return null;
+		Categoria createdCategoria = categoriaRepository.save(categoria);
+		
+		return createdCategoria.getId();
 	}
 
 	@Override

@@ -3,30 +3,42 @@ package com.sinensia.superpollo.business.services.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Establecimiento;
 import com.sinensia.superpollo.business.services.EstablecimientoServices;
+import com.sinensia.superpollo.integration.repositories.EstablecimientoRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EstablecimientoServicesImpl implements EstablecimientoServices{
 
+	@Autowired
+	private EstablecimientoRepository establecimientoRepository;
+	
 	@Override
+	@Transactional
 	public Long create(Establecimiento establecimiento) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(establecimiento.getCodigo() != null) {
+			throw new IllegalStateException("El establecimiento " + establecimiento.getNombreComercial() + " ya tiene código. No se puede crear.");
+		}
+		
+		Establecimiento createdEstablecimiento = establecimientoRepository.save(establecimiento);
+		
+		return createdEstablecimiento.getCodigo();
 	}
 
 	@Override
 	public Optional<Establecimiento> read(Long codigo) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return establecimientoRepository.findById(codigo);
 	}
 
 	@Override
 	public List<Establecimiento> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return establecimientoRepository.findAll();
 	}
 
 }
