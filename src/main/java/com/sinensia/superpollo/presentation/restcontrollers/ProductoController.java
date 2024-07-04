@@ -80,6 +80,7 @@ public class ProductoController {
 		try {
 			productoServices.delete(codigo);
 		} catch(Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el producto " + codigo), HttpStatus.NOT_FOUND);
 		}
 		

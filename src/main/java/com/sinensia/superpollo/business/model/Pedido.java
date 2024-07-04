@@ -8,6 +8,8 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -28,6 +30,9 @@ public class Pedido implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaHora;
+	
+	@Enumerated(EnumType.STRING)
+	private EstadoPedido estado;
 	
 	@ManyToOne
 	@JoinColumn(name="CODIGO_ESTABLECIMIENTO")
@@ -58,6 +63,14 @@ public class Pedido implements Serializable {
 
 	public void setFechaHora(Date fechaHora) {
 		this.fechaHora = fechaHora;
+	}
+	
+	public EstadoPedido getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoPedido estado) {
+		this.estado = estado;
 	}
 
 	public Establecimiento getEstablecimiento() {

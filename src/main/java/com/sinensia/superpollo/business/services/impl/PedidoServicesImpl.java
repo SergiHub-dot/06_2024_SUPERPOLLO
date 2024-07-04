@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sinensia.superpollo.business.model.EstadoPedido;
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.integration.repositories.PedidoRepository;
@@ -25,6 +26,8 @@ public class PedidoServicesImpl implements PedidoServices{
 		if(pedido.getNumero() != null) {
 			throw new IllegalStateException("El número de pedido no es null. No se puede crear.");
 		}
+		
+		pedido.setEstado(EstadoPedido.NUEVO);
 		
 		Pedido createdPedido = pedidoRepository.save(pedido);
 		

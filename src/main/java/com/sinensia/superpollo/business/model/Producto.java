@@ -7,10 +7,11 @@ import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="PRODUCTOS")
@@ -28,7 +29,8 @@ public class Producto implements Serializable{
 	
 	private double precio;
 	
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="ID_CATEGORIA")
 	private Categoria categoria;
 	
 	private boolean descatalogado;
