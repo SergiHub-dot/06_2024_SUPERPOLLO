@@ -178,7 +178,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/productos/102",
+							"raw": "http://localhost:8080/productos/100",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -186,7 +186,7 @@
 							"port": "8080",
 							"path": [
 								"productos",
-								"102"
+								"100"
 							],
 							"query": [
 								{
@@ -355,7 +355,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"fechaHora\": \"2023-06-17T07:07:23.069+00:00\",\r\n    \"establecimiento\": {\"codigo\": 100},\r\n    \"observaciones\": \"No poner hielo en las bebidas\",\r\n    \"lineasDetalle\": [\r\n        {\r\n            \"producto\": {\"codigo\": 100},\r\n            \"cantidad\": 2,\r\n            \"precio\": 6.0\r\n        },\r\n        {\r\n            \"producto\": {\"codigo\": 103},\r\n            \"cantidad\": 8,\r\n            \"precio\": 3.0\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"fechaHora\": \"2023-04-17T07:01:42.069+00:00\",\r\n    \"establecimiento\": {\"codigo\": 100},\r\n    \"observaciones\": \"No poner hielo\",\r\n    \"lineasDetalle\": [\r\n        {\r\n            \"producto\": {\"codigo\": 100 },\r\n            \"cantidad\": 2,\r\n            \"precio\": 6.0\r\n        },\r\n        {\r\n            \"producto\": {\"codigo\": 103},\r\n            \"cantidad\": 8,\r\n            \"precio\": 3.0\r\n        },\r\n        {\r\n            \"producto\": {\"codigo\": 135},\r\n            \"cantidad\": 35,\r\n            \"precio\": 4.7\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

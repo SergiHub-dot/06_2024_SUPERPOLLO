@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GestorCentralizadoExcepciones extends ResponseEntityExceptionHandler{
 
-	// ************************************************************************************************************
+	    // ************************************************************************************************************
 	
 		@Override
 		protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {	

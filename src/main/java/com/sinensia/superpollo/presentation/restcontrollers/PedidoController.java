@@ -1,6 +1,5 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.services.PedidoServices;
-import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
+import com.sinensia.superpollo.presentation.config.PresentationException;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -33,45 +33,32 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/{numero}")
-	public ResponseEntity<?> getByNumero(@PathVariable Long numero) {
+	public Pedido getByNumero(@PathVariable Long numero) {
 		
 		Optional<Pedido> optional = pedidoServices.read(numero);
 		
 		if(optional.isEmpty()) {
-			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el pedido " + numero), HttpStatus.NOT_FOUND);
+			throw new PresentationException("No se encuentra el pedido " + numero, HttpStatus.NOT_FOUND);
 		} 
 	
-		return ResponseEntity.of(optional);
+		return optional.get();
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Pedido pedido, UriComponentsBuilder ucb) {
-		
-		Long numero = null;
-		
-		try {
-		
-			numero = pedidoServices.create(pedido);
-		
-		} catch(IllegalStateException e) {
-			return ResponseEntity.badRequest().body(new ErrorHttpCustomizado(e.getMessage()));
-		}
-		
-		URI uri = ucb.path("/pedidos/{numero}").build(numero);
-		
-		return ResponseEntity.created(uri).build();
+		Long numero = pedidoServices.create(pedido);
+		return ResponseEntity.created(ucb.path("/pedidos/{numero}").build(numero)).build();
 	}
 	
 	@DeleteMapping("/{numero}")
-	public ResponseEntity<?> delete(@PathVariable Long numero) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable Long numero) {
 		
 		try {
 			pedidoServices.delete(numero);
 		} catch(Exception e) {
-			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el pedido " + numero), HttpStatus.NOT_FOUND);
+			throw new PresentationException("No se encuentra el pedido " + numero, HttpStatus.NOT_FOUND);
 		}
-		
-		return ResponseEntity.noContent().build();
 	}
 	
 }

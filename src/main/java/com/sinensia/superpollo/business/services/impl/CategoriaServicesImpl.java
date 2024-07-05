@@ -3,7 +3,6 @@ package com.sinensia.superpollo.business.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Categoria;
@@ -14,9 +13,12 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class CategoriaServicesImpl implements CategoriaServices{
-
-	@Autowired
+	
 	private CategoriaRepository categoriaRepository;
+	
+	public CategoriaServicesImpl(CategoriaRepository categoriaRepository) {
+		this.categoriaRepository = categoriaRepository;
+	}
 	
 	@Override
 	@Transactional

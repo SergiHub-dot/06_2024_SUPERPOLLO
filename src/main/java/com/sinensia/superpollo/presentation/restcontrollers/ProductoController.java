@@ -1,6 +1,5 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
-import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 import com.sinensia.superpollo.presentation.config.PresentationException;
 
 @RestController
@@ -47,33 +45,21 @@ public class ProductoController {
 	}
 	
 	@GetMapping("/{codigo}")
-	public ResponseEntity<?> getByCodigo(@PathVariable Long codigo) {
+	public Producto getByCodigo(@PathVariable Long codigo) {
 		
 		Optional<Producto> optional = productoServices.read(codigo);
 		
 		if(optional.isEmpty()) {
-			return new ResponseEntity<>(new ErrorHttpCustomizado("No se encuentra el producto " + codigo), HttpStatus.NOT_FOUND);
+			throw new PresentationException("No se encuentra el producto " + codigo, HttpStatus.NOT_FOUND);
 		} 
 	
-		return ResponseEntity.of(optional);
+		return optional.get();
 	}
 	
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Producto producto, UriComponentsBuilder ucb) {
-		
-		Long codigo = null;
-		
-		try {
-		
-			codigo = productoServices.create(producto);
-		
-		} catch(IllegalStateException e) {
-			return ResponseEntity.badRequest().body(new ErrorHttpCustomizado(e.getMessage()));
-		}
-		
-		URI uri = ucb.path("/productos/{codigo}").build(codigo);
-		
-		return ResponseEntity.created(uri).build();
+		Long codigo = productoServices.create(producto);
+		return ResponseEntity.created(ucb.path("/productos/{codigo}").build(codigo)).build();
 	}
 		
 	@DeleteMapping("/{codigo}")
@@ -84,9 +70,7 @@ public class ProductoController {
 			productoServices.delete(codigo);
 		} catch(IllegalStateException e) {
 			throw new PresentationException("No se encuentra el producto " + codigo, HttpStatus.NOT_FOUND);
-		} catch(Exception e) {
-			throw new PresentationException("Ha habido un problema en la petición. ", HttpStatus.BAD_REQUEST);
-		}
+		} 
 	}
 	
 	@PutMapping
