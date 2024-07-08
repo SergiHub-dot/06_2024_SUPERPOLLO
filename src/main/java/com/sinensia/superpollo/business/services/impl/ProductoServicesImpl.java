@@ -97,9 +97,9 @@ public class ProductoServicesImpl implements ProductoServices {
 	}
 
 	@Override
+	@Transactional
 	public void variarPrecio(List<Producto> productos, double porcentaje) {
-		// TODO Auto-generated method stub
-		
+		productoRepository.variarPrecio(productos, porcentaje);
 	}
 
 	@Override
@@ -110,7 +110,11 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public Map<Categoria, Integer> getEstadisticaNumeroProductosPorCategoria() {
-		// TODO Auto-generated method stub
+		
+		List<Object[]> resultados = productoRepository.getEstadisticaNumeroProductoCategoria();
+		
+		// TODO
+		
 		return null;
 	}
 
