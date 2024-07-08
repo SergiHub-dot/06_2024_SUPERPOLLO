@@ -73,25 +73,22 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public List<Producto> getBetweenPriceRange(double min, double max) {
-		return productoRepository.getBetweenPrecios(min, max);
+		return productoRepository.findByPrecioBetween(min, max);
 	}
 
 	@Override
 	public List<Producto> getBetweenDates(Date desde, Date hasta) {
-		// TODO Auto-generated method stub
-		return null;
+		return productoRepository.findByFechaAltaBetween(desde, hasta);
 	}
 
 	@Override
 	public List<Producto> getDescatalogados() {
-		// TODO Auto-generated method stub
-		return null;
+		return productoRepository.findByDescatalogadoTrue();
 	}
 
 	@Override
-	public List<Producto> getByCategoria(Categoria categoria) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Producto> getByCategoria(Categoria categoria) {		
+		return productoRepository.findByCategoria(categoria);
 	}
 
 	@Override
