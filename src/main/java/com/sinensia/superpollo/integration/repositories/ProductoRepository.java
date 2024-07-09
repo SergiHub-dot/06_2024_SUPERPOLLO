@@ -26,7 +26,14 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	@Modifying
 	void variarPrecio(List<Producto> productos, double porcentaje);
 	
+	@Query("UPDATE Producto p SET p.precio = p.precio + (p.precio * :porcentaje) / 100 WHERE p.codigo IN :codigosProducto")
+	@Modifying
+	void variarPrecio(long[] codigosProducto, double porcentaje);
+
 	@Query("SELECT c, COUNT(p) FROM Categoria c LEFT JOIN Producto p ON p.categoria = c GROUP BY c")
 	List<Object[]> getEstadisticaNumeroProductoCategoria();
+	
+	@Query("SELECT c, ROUND(AVG(p.precio),2) FROM Categoria c LEFT JOIN Producto p ON p.categoria = c GROUP BY c")
+	List<Object[]> getEstadisticaPrecioMedioProductoCategoria();
 
 }

@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +137,7 @@ public class ProductoRepositoryTest {
 	}
 	
 	@Test
-	void variarPrecioTest() {
+	void variarPrecio1Test() {
 		
 		Producto producto1 = new Producto();
 		Producto producto2 = new Producto();
@@ -159,5 +161,81 @@ public class ProductoRepositoryTest {
 		assertEquals(3.0, producto3.getPrecio());
 		
 	}
+	
+	@Test
+	void variarPrecio2Test() {
+		
+		long[] codigos = {100L, 103L};
+
+		productoRepository.variarPrecio(codigos, 50.0);
+
+		Producto producto1 = productoRepository.findById(100L).get();
+		Producto producto2 = productoRepository.findById(103L).get();
+		Producto producto3 = productoRepository.findById(102L).get();
+		
+		assertEquals(9.0, producto1.getPrecio());
+		assertEquals(4.5, producto2.getPrecio());
+		assertEquals(3.0, producto3.getPrecio());
+		
+	}
+	
+	@Test
+	void getEstadisticaNumeroProductoCategoriaTest() {
+		
+		Map<Long, Long> resultadosEsperados = new HashMap<>();
+		
+		resultadosEsperados.put(1L, 6L);
+		resultadosEsperados.put(2L, 11L);
+		resultadosEsperados.put(3L, 2L);
+		resultadosEsperados.put(4L, 6L);
+		resultadosEsperados.put(5L, 12L);
+		resultadosEsperados.put(6L, 0L);
+		resultadosEsperados.put(7L, 3L);
+		resultadosEsperados.put(8L, 5L);
+		resultadosEsperados.put(9L, 11L);
+		resultadosEsperados.put(10L, 7L);
+		resultadosEsperados.put(11L, 7L);
+		resultadosEsperados.put(12L, 0L);
+		
+		List<Object[]> resultados = productoRepository.getEstadisticaNumeroProductoCategoria();
+		
+		for(Object[] objects: resultados) {
+			Long idCategoria = ((Categoria)objects[0]).getId();
+			Long cantidad = (Long) objects[1];
+			assertEquals(resultadosEsperados.get(idCategoria), cantidad);
+		}
+		
+		assertEquals(12, resultados.size());
+	}
+	
+	@Test
+	void getEstadisticaPrecioMedioProductoCategoriaTest() {
+		
+		Map<Long, Double> resultadosEsperados = new HashMap<>();
+		
+		resultadosEsperados.put(1L, 4.43);
+		resultadosEsperados.put(2L, 1.72);
+		resultadosEsperados.put(3L, 3.0);
+		resultadosEsperados.put(4L, 5.07);
+		resultadosEsperados.put(5L, 12.68);
+		resultadosEsperados.put(6L, null);
+		resultadosEsperados.put(7L, 1.83);
+		resultadosEsperados.put(8L, 2.5);
+		resultadosEsperados.put(9L, 7.42);
+		resultadosEsperados.put(10L, 1.97);
+		resultadosEsperados.put(11L, 2.67);
+		resultadosEsperados.put(12L, null);
+		
+		List<Object[]> resultados = productoRepository.getEstadisticaPrecioMedioProductoCategoria();
+		
+		for(Object[] objects: resultados) {
+			Long idCategoria = ((Categoria)objects[0]).getId();
+			Double precioMedio = (Double) objects[1];
+			assertEquals(resultadosEsperados.get(idCategoria), precioMedio);
+		}
+		
+		assertEquals(12, resultados.size());
+	}
+	
 	
 }

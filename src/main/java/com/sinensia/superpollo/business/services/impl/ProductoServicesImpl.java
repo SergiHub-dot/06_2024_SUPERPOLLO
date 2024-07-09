@@ -1,6 +1,7 @@
 package com.sinensia.superpollo.business.services.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -103,9 +104,9 @@ public class ProductoServicesImpl implements ProductoServices {
 	}
 
 	@Override
+	@Transactional
 	public void variarPrecio(long[] codigos, double porcentaje) {
-		// TODO Auto-generated method stub
-		
+		productoRepository.variarPrecio(codigos, porcentaje);
 	}
 
 	@Override
@@ -113,15 +114,31 @@ public class ProductoServicesImpl implements ProductoServices {
 		
 		List<Object[]> resultados = productoRepository.getEstadisticaNumeroProductoCategoria();
 		
-		// TODO
+		Map<Categoria, Integer> estadistica = new HashMap<>();
 		
-		return null;
+		for(Object[] objects: resultados) {
+			Categoria categoria = (Categoria) objects[0];
+			Integer cantidad = ((Long) objects[1]).intValue();
+			estadistica.put(categoria, cantidad);
+		}
+		
+		return estadistica;
 	}
 
 	@Override
 	public Map<Categoria, Double> getEstadisticaPrecioMedioProductosPorCategoria() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Object[]> resultados = productoRepository.getEstadisticaPrecioMedioProductoCategoria();
+		
+		Map<Categoria, Double> estadistica = new HashMap<>();
+		
+		for(Object[] objects: resultados) {
+			Categoria categoria = (Categoria) objects[0];
+			Double precioMedio = (Double) objects[1];
+			estadistica.put(categoria, precioMedio);
+		}
+		
+		return estadistica;
 	}
 
 }
