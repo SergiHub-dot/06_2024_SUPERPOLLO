@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 
 public interface ProductoServices {
 
@@ -96,4 +97,6 @@ public interface ProductoServices {
 	 * ...
 	 */
 	Map<Categoria, Double> getEstadisticaPrecioMedioProductosPorCategoria();
+	
+	List<Producto1DTO> getProducto1DTOs();
 }

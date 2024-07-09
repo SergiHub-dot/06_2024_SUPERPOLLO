@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sinensia.superpollo.business.model.Pedido;
+import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
+import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
 
 public interface PedidoServices {
 	
@@ -24,5 +26,8 @@ public interface PedidoServices {
 	void delete(Long numero);
 	
 	List<Pedido> getAll();
+	
+	List<Pedido1DTO> getPedido1DTOs();
+	List<Pedido2DTO> getPedido2DTOs();
 	
 }

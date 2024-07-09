@@ -1,5 +1,6 @@
 package com.sinensia.superpollo.business.services.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.ProductoServices;
 import com.sinensia.superpollo.integration.repositories.ProductoRepository;
 
@@ -139,6 +141,23 @@ public class ProductoServicesImpl implements ProductoServices {
 		}
 		
 		return estadistica;
+	}
+
+	@Override
+	public List<Producto1DTO> getProducto1DTOs() {
+		
+		List<Object[]> resultados = productoRepository.findProducto1DTOs();
+		
+		List<Producto1DTO> productos1DTO = new ArrayList<>();
+		
+		for(Object[] objects: resultados) {
+			String nombre = (String) objects[0];
+			Double precio = (Double) objects[1];
+			String nombreCategoria = (String) objects[2];
+			productos1DTO.add(new Producto1DTO(nombre, precio, nombreCategoria));
+		}
+			
+		return productos1DTO;
 	}
 
 }

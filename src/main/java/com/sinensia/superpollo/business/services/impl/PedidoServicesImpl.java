@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.EstadoPedido;
 import com.sinensia.superpollo.business.model.Pedido;
+import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
+import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.integration.repositories.PedidoRepository;
 
@@ -55,6 +57,18 @@ public class PedidoServicesImpl implements PedidoServices{
 	@Override
 	public List<Pedido> getAll() {
 		return pedidoRepository.findAll();
+	}
+
+	@Override
+	public List<Pedido1DTO> getPedido1DTOs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Pedido2DTO> getPedido2DTOs() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

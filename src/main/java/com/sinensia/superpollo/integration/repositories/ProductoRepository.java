@@ -36,4 +36,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	@Query("SELECT c, ROUND(AVG(p.precio),2) FROM Categoria c LEFT JOIN Producto p ON p.categoria = c GROUP BY c")
 	List<Object[]> getEstadisticaPrecioMedioProductoCategoria();
 
+	// ************************** CREACION DE DTOS ************************************************
+	
+	@Query("SELECT UPPER(CONCAT(p.nombre, ' [', p.codigo, ']')), p.precio, p.categoria.nombre FROM Producto p")
+	List<Object[]> findProducto1DTOs(); 
+	
 }

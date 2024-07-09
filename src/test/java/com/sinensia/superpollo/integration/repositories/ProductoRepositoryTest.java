@@ -237,5 +237,7 @@ public class ProductoRepositoryTest {
 		assertEquals(12, resultados.size());
 	}
 	
+	// TODO Testear todos los métodos de repositorios que nos devuelven DTOs ( son 3 )
+	
 	
 }
