@@ -13,6 +13,7 @@ import com.sinensia.superpollo.business.model.EstadoPedido;
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
+import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.integration.repositories.PedidoRepository;
 
@@ -109,6 +110,12 @@ public class PedidoServicesImpl implements PedidoServices{
 		}
 		
 		return pedidos2DTO;
+	}
+
+	@Override
+	public List<Pedido3DTO> getPedido3DTOs() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

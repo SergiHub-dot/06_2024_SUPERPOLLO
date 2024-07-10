@@ -22,10 +22,10 @@ public class PruebasController {
 	private ProductoServices productoServices;
 	
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	private PedidoServices pedidoServices;
 	
 	@Autowired
-	private PedidoServices pedidoServices;
+	private PedidoRepository pedidoRepository;
 	
 	@GetMapping("/services/productodto1")
 	public List<Producto1DTO> getRepositoryProducto1DTOs(){

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sinensia.superpollo.business.model.Establecimiento;
+import com.sinensia.superpollo.business.model.dtos.Establecimiento1DTO;
 
 public interface EstablecimientoServices {
 
@@ -18,5 +19,7 @@ public interface EstablecimientoServices {
 	Optional<Establecimiento> read(Long codigo);
 	
 	List<Establecimiento> getAll();
+	
+	List<Establecimiento1DTO> getEstablecimiento1DTOs();
 
 }

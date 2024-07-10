@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Establecimiento;
+import com.sinensia.superpollo.business.model.dtos.Establecimiento1DTO;
 import com.sinensia.superpollo.business.services.EstablecimientoServices;
 import com.sinensia.superpollo.integration.repositories.EstablecimientoRepository;
 
@@ -39,6 +40,12 @@ public class EstablecimientoServicesImpl implements EstablecimientoServices{
 	@Override
 	public List<Establecimiento> getAll() {
 		return establecimientoRepository.findAll();
+	}
+
+	@Override
+	public List<Establecimiento1DTO> getEstablecimiento1DTOs() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

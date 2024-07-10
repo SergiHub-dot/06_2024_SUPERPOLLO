@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
+import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 
 public interface PedidoServices {
 	
@@ -29,5 +30,6 @@ public interface PedidoServices {
 	
 	List<Pedido1DTO> getPedido1DTOs();
 	List<Pedido2DTO> getPedido2DTOs();
+	List<Pedido3DTO> getPedido3DTOs();
 	
 }
