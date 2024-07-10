@@ -1,5 +1,8 @@
 package com.sinensia.superpollo.business.services.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,9 @@ import jakarta.transaction.Transactional;
 @Service
 public class PedidoServicesImpl implements PedidoServices{
 
+	private final SimpleDateFormat SDF_1 = new SimpleDateFormat("dd/MM/yyyy");
+	private final SimpleDateFormat SDF_2 = new SimpleDateFormat("HH:mm");
+	
 	@Autowired
 	private PedidoRepository pedidoRepository;
 	
@@ -61,14 +67,48 @@ public class PedidoServicesImpl implements PedidoServices{
 
 	@Override
 	public List<Pedido1DTO> getPedido1DTOs() {
-		// TODO Auto-generated method stub
-		return null;
+	
+		List<Object[]> resultados = pedidoRepository.getPedido1DTO();
+		List<Pedido1DTO> pedidos1DTO = new ArrayList<>();
+		
+		for(Object[] objects: resultados) {
+		
+			Long numero = (Long) objects[0];
+			Date fechaHora = (Date) objects[1];
+			String nombreEstablecimiento = (String) objects[2];
+			EstadoPedido estado = (EstadoPedido) objects[3];
+			
+			String fecha = SDF_1.format(fechaHora);
+			String hora = SDF_2.format(fechaHora);
+			String strEstado = estado.toString();
+			
+			Pedido1DTO pedido1DTO = new Pedido1DTO(numero, fecha, hora, nombreEstablecimiento, strEstado);
+			pedidos1DTO.add(pedido1DTO);
+		}
+		
+		return pedidos1DTO;
 	}
 
 	@Override
 	public List<Pedido2DTO> getPedido2DTOs() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Object[]> resultados = pedidoRepository.getPedido2DTO();
+		
+		List<Pedido2DTO> pedidos2DTO = new ArrayList<>();
+		
+		for(Object[] objects: resultados) {
+			
+			Long numero = (Long) objects[0];
+			Date fechaHora = (Date) objects[1];
+			String estado = ((EstadoPedido) objects[2]).toString();
+			int numeroLineas = (Integer) objects[3];
+			Double importeTotal = (Double) objects[4];
+			
+			Pedido2DTO pedido2DTO = new Pedido2DTO(numero, fechaHora, estado, numeroLineas, importeTotal);
+			pedidos2DTO.add(pedido2DTO);
+		}
+		
+		return pedidos2DTO;
 	}
 
 }

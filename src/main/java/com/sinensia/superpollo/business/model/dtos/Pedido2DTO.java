@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Pedido2DTO implements Serializable {
-
 	
 	private Long numero;
 	private Date fechaHora;
