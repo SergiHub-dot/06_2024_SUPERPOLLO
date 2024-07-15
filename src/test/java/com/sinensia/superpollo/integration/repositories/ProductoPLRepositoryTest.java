@@ -15,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import com.sinensia.superpollo.business.model.Categoria;
-import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.integration.model.CategoriaPL;
 import com.sinensia.superpollo.integration.model.ProductoPL;
 
 @DataJpaTest
@@ -29,11 +28,11 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void findByPrecioBetweenTest() {
 		
-		Producto producto1 = new Producto();
-		Producto producto2 = new Producto();
-		Producto producto3 = new Producto();
-		Producto producto4 = new Producto();
-		Producto producto5 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
+		ProductoPL producto2 = new ProductoPL();
+		ProductoPL producto3 = new ProductoPL();
+		ProductoPL producto4 = new ProductoPL();
+		ProductoPL producto5 = new ProductoPL();
 		
 		producto1.setCodigo(127L);
 		producto2.setCodigo(139L);
@@ -41,9 +40,9 @@ public class ProductoPLRepositoryTest {
 		producto4.setCodigo(160L);
 		producto5.setCodigo(138L);
 		
-		List<Producto> productosEsperados = Arrays.asList(producto1, producto2, producto3, producto4, producto5);
+		List<ProductoPL> productosEsperados = Arrays.asList(producto1, producto2, producto3, producto4, producto5);
 		
-		List<Producto> productos = productoPLRepository.findByPrecioBetween(1.9, 2.3);
+		List<ProductoPL> productos = productoPLRepository.findByPrecioBetween(1.9, 2.3);
 		
 		assertEquals(5, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -52,12 +51,12 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void findByFechaAltaBetweenTest() {
 		
-		Producto producto1 = new Producto();
-		Producto producto2 = new Producto();
-		Producto producto3 = new Producto();
-		Producto producto4 = new Producto();
-		Producto producto5 = new Producto();
-		Producto producto6 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
+		ProductoPL producto2 = new ProductoPL();
+		ProductoPL producto3 = new ProductoPL();
+		ProductoPL producto4 = new ProductoPL();
+		ProductoPL producto5 = new ProductoPL();
+		ProductoPL producto6 = new ProductoPL();
 
 		producto1.setCodigo(162L);
 		producto2.setCodigo(161L);
@@ -66,7 +65,7 @@ public class ProductoPLRepositoryTest {
 		producto5.setCodigo(163L);
 		producto6.setCodigo(114L);
 
-		List<Producto> productosEsperados = Arrays.asList(producto1, producto2, producto3, producto4, producto5, producto6);
+		List<ProductoPL> productosEsperados = Arrays.asList(producto1, producto2, producto3, producto4, producto5, producto6);
 		
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -81,7 +80,7 @@ public class ProductoPLRepositoryTest {
 
 		}
 
-		List<Producto> productos = productoPLRepository.findByFechaAltaBetween(desde, hasta);
+		List<ProductoPL> productos = productoPLRepository.findByFechaAltaBetween(desde, hasta);
 
 		assertEquals(6, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -90,11 +89,11 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void findByDescatalogadoTrueTest() {
 
-		Producto producto1 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
 		
 		producto1.setCodigo(136L);
 		
-		List<Producto> productos = productoPLRepository.findByDescatalogadoTrue();
+		List<ProductoPL> productos = productoPLRepository.findByDescatalogadoTrue();
 		
 		assertEquals(1, productos.size());
 		assertTrue(productos.contains(producto1));
@@ -103,18 +102,18 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void findByCategoriaTest() {
 		
-		Categoria categoria1 = new Categoria();
+		CategoriaPL categoria1 = new CategoriaPL();
 		categoria1.setId(3L);
 		
-		Producto producto1 = new Producto();
-		Producto producto2 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
+		ProductoPL producto2 = new ProductoPL();
 		
 		producto1.setCodigo(102L);
 		producto2.setCodigo(103L);
 		
-		List<Producto> productosEsperados = Arrays.asList(producto1, producto2);
+		List<ProductoPL> productosEsperados = Arrays.asList(producto1, producto2);
 		
-		List<Producto> productos = productoPLRepository.findByCategoria(categoria1);
+		List<ProductoPL> productos = productoPLRepository.findByCategoria(categoria1);
 		
 		assertEquals(2, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -123,15 +122,15 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void findByCategoriaIdTest() {
 		
-		Producto producto1 = new Producto();
-		Producto producto2 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
+		ProductoPL producto2 = new ProductoPL();
 		
 		producto1.setCodigo(102L);
 		producto2.setCodigo(103L);
 		
-		List<Producto> productosEsperados = Arrays.asList(producto1, producto2);
+		List<ProductoPL> productosEsperados = Arrays.asList(producto1, producto2);
 		
-		List<Producto> productos = productoPLRepository.findByCategoriaId(3L);
+		List<ProductoPL> productos = productoPLRepository.findByCategoriaId(3L);
 		
 		assertEquals(2, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -201,7 +200,7 @@ public class ProductoPLRepositoryTest {
 		List<Object[]> resultados = productoPLRepository.getEstadisticaNumeroProductoCategoria();
 		
 		for(Object[] objects: resultados) {
-			Long idCategoria = ((Categoria)objects[0]).getId();
+			Long idCategoria = ((CategoriaPL)objects[0]).getId();
 			Long cantidad = (Long) objects[1];
 			assertEquals(resultadosEsperados.get(idCategoria), cantidad);
 		}
@@ -230,7 +229,7 @@ public class ProductoPLRepositoryTest {
 		List<Object[]> resultados = productoPLRepository.getEstadisticaPrecioMedioProductoCategoria();
 		
 		for(Object[] objects: resultados) {
-			Long idCategoria = ((Categoria)objects[0]).getId();
+			Long idCategoria = ((CategoriaPL)objects[0]).getId();
 			Double precioMedio = (Double) objects[1];
 			assertEquals(resultadosEsperados.get(idCategoria), precioMedio);
 		}

@@ -15,6 +15,7 @@ import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.ProductoServices;
+import com.sinensia.superpollo.integration.model.CategoriaPL;
 import com.sinensia.superpollo.integration.model.ProductoPL;
 import com.sinensia.superpollo.integration.repositories.ProductoPLRepository;
 
@@ -85,30 +86,27 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public List<Producto> getAll() {
-		
-		return productoPLRepository.findAll().stream()
-				.map(x -> mapper.map(x, Producto.class))
-				.toList();
+		return convertList(productoPLRepository.findAll());
 	}
 
 	@Override
-	public List<Producto> getBetweenPriceRange(double min, double max) {
-		return productoPLRepository.findByPrecioBetween(min, max);
+	public List<Producto> getBetweenPriceRange(double min, double max) {		
+		return convertList(productoPLRepository.findByPrecioBetween(min, max));
 	}
 
 	@Override
 	public List<Producto> getBetweenDates(Date desde, Date hasta) {
-		return productoPLRepository.findByFechaAltaBetween(desde, hasta);
+		return convertList(productoPLRepository.findByFechaAltaBetween(desde, hasta));
 	}
 
 	@Override
 	public List<Producto> getDescatalogados() {
-		return productoPLRepository.findByDescatalogadoTrue();
+		return convertList(productoPLRepository.findByDescatalogadoTrue());
 	}
 
 	@Override
-	public List<Producto> getByCategoria(Categoria categoria) {		
-		return productoPLRepository.findByCategoria(categoria);
+	public List<Producto> getByCategoria(Categoria categoria) {	
+		return convertList(productoPLRepository.findByCategoria(mapper.map(categoria, CategoriaPL.class)));
 	}
 
 	@Override
@@ -182,6 +180,23 @@ public class ProductoServicesImpl implements ProductoServices {
 		}
 			
 		return productos1DTO;
+	}
+	
+	// **********************************************************
+	//
+	// Private Methods
+	//
+	// **********************************************************
+	
+	private List<Producto> convertList(List<ProductoPL> productosPL){
+		
+		List<Producto> productos = new ArrayList<>();
+		
+		for(ProductoPL productoPL: productosPL) {
+			productos.add(mapper.map(productoPL, Producto.class));
+		}
+		
+		return productos;
 	}
 
 }

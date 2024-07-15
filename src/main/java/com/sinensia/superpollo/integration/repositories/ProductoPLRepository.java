@@ -7,21 +7,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.sinensia.superpollo.business.model.Categoria;
-import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.integration.model.CategoriaPL;
 import com.sinensia.superpollo.integration.model.ProductoPL;
 
 public interface ProductoPLRepository extends JpaRepository<ProductoPL, Long> {
 
-	List<Producto> findByPrecioBetween(double min, double max);
+	List<ProductoPL> findByPrecioBetween(double min, double max);
 	
-	List<Producto> findByFechaAltaBetween(Date desde, Date hasta);
+	List<ProductoPL> findByFechaAltaBetween(Date desde, Date hasta);
 
-	List<Producto> findByDescatalogadoTrue();
+	List<ProductoPL> findByDescatalogadoTrue();
 	
-	List<Producto> findByCategoria(Categoria categoria);
+	List<ProductoPL> findByCategoria(CategoriaPL categoria);
 	
-	List<Producto> findByCategoriaId(Long idCategoria);
+	List<ProductoPL> findByCategoriaId(Long idCategoria);
 	
 	@Query("UPDATE ProductoPL p SET p.precio = p.precio + (p.precio * :porcentaje) / 100 WHERE p IN :productos")
 	@Modifying
