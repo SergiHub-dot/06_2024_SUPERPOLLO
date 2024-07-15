@@ -1,14 +1,17 @@
-package com.sinensia.superpollo.business.model;
+package com.sinensia.superpollo.integration.model;
 
 import java.io.Serializable;
 
-public class DatosContacto implements Serializable {
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class DatosContactoPL implements Serializable {
 
 	private String telefono;
 	private String fax;
 	private String email;
 	
-	public DatosContacto() {
+	public DatosContactoPL() {
 		
 	}
 

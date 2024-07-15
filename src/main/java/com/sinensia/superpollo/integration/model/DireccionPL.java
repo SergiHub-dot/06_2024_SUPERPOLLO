@@ -1,8 +1,11 @@
-package com.sinensia.superpollo.business.model;
+package com.sinensia.superpollo.integration.model;
 
 import java.io.Serializable;
 
-public class Direccion implements Serializable{
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class DireccionPL implements Serializable{
 
 	private String direccion;
 	private String poblacion;
@@ -10,7 +13,7 @@ public class Direccion implements Serializable{
 	private String provincia;
 	private String pais;
 	
-	public Direccion() {
+	public DireccionPL() {
 		
 	}
 

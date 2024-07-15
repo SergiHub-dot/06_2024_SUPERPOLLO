@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
+import com.sinensia.superpollo.integration.model.PedidoPL;
 
-public interface PedidoRepository extends JpaRepository<Pedido, Long>{
+public interface PedidoPLRepository extends JpaRepository<PedidoPL, Long>{
 	
-	@Query("SELECT p.numero, p.fechaHora, p.establecimiento.nombreComercial, p.estado FROM Pedido p")
+	@Query("SELECT p.numero, p.fechaHora, p.establecimiento.nombreComercial, p.estado FROM PedidoPL p")
 	List<Object[]> getPedido1DTO();
 		
 	@Query("   SELECT p.numero,                        "
@@ -18,7 +18,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 		 + "          p.estado,                        "
 		 + "          SIZE(p.lineasDetalle),           "
 		 + "          SUM(ld.cantidad * ld.precio)     "
-		 + "     FROM Pedido p JOIN p.lineasDetalle ld "
+		 + "     FROM PedidoPL p JOIN p.lineasDetalle ld "
 		 + " GROUP BY p.numero")
 	List<Object[]> getPedido2DTO();
 		
@@ -27,6 +27,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 		 + "                                                                  SUBSTRING(p.estado, 0), "
 		 + "                                                                  p.observaciones, "
 		 + "                                                                  'd') "
-		 + "  FROM Pedido p")
+		 + "  FROM PedidoPL p")
 	List<Pedido3DTO> getPedido3DTO();
 }

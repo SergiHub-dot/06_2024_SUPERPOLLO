@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,8 @@ import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
-import com.sinensia.superpollo.integration.repositories.PedidoRepository;
+import com.sinensia.superpollo.integration.model.PedidoPL;
+import com.sinensia.superpollo.integration.repositories.PedidoPLRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -26,7 +28,10 @@ public class PedidoServicesImpl implements PedidoServices{
 	private final SimpleDateFormat SDF_2 = new SimpleDateFormat("HH:mm");
 	
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	private PedidoPLRepository pedidoPLRepository;
+	
+	@Autowired
+	private DozerBeanMapper mapper;
 	
 	@Override
 	@Transactional
@@ -37,39 +42,53 @@ public class PedidoServicesImpl implements PedidoServices{
 		}
 		
 		pedido.setEstado(EstadoPedido.NUEVO);
-		
-		Pedido createdPedido = pedidoRepository.save(pedido);
-		
-		return createdPedido.getNumero();
+	
+		return pedidoPLRepository.save(mapper.map(pedido, PedidoPL.class)).getNumero();
 	}
 
 	@Override
 	public Optional<Pedido> read(Long numero) {
-		return pedidoRepository.findById(numero);
+		
+		Optional<PedidoPL> optionalPL = pedidoPLRepository.findById(numero);
+		
+		Pedido pedido = null;
+		
+		if(optionalPL.isPresent()) {
+			pedido = mapper.map(optionalPL.get(), Pedido.class);
+		}
+		
+		return Optional.ofNullable(pedido);
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long numero) {
 		
-		boolean existe = pedidoRepository.existsById(numero);
+		boolean existe = pedidoPLRepository.existsById(numero);
 		
 		if(!existe) {
 			throw new IllegalStateException("No existe el pedido número " + numero);
 		}
 		
-		pedidoRepository.deleteById(numero);	
+		pedidoPLRepository.deleteById(numero);	
 	}
 
 	@Override
 	public List<Pedido> getAll() {
-		return pedidoRepository.findAll();
+		
+		List<Pedido> pedidos = new ArrayList<>();
+		
+		for(PedidoPL pedidoPL: pedidoPLRepository.findAll()) {
+			pedidos.add(mapper.map(pedidoPL, Pedido.class));
+		}
+		
+		return pedidos ;
 	}
 
 	@Override
 	public List<Pedido1DTO> getPedido1DTOs() {
 	
-		List<Object[]> resultados = pedidoRepository.getPedido1DTO();
+		List<Object[]> resultados = pedidoPLRepository.getPedido1DTO();
 		List<Pedido1DTO> pedidos1DTO = new ArrayList<>();
 		
 		for(Object[] objects: resultados) {
@@ -93,7 +112,7 @@ public class PedidoServicesImpl implements PedidoServices{
 	@Override
 	public List<Pedido2DTO> getPedido2DTOs() {
 		
-		List<Object[]> resultados = pedidoRepository.getPedido2DTO();
+		List<Object[]> resultados = pedidoPLRepository.getPedido2DTO();
 		
 		List<Pedido2DTO> pedidos2DTO = new ArrayList<>();
 		
@@ -114,7 +133,7 @@ public class PedidoServicesImpl implements PedidoServices{
 
 	@Override
 	public List<Pedido3DTO> getPedido3DTOs() {
-		return pedidoRepository.getPedido3DTO();
+		return pedidoPLRepository.getPedido3DTO();
 	}
 
 }

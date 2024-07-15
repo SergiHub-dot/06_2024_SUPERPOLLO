@@ -11,10 +11,24 @@
     	<class-b>com.sinensia.superpollo.integration.model.CategoriaPL</class-b>
     </mapping> 
     
-        
     <mapping>
     	<class-a>com.sinensia.superpollo.business.model.Producto</class-a>
     	<class-b>com.sinensia.superpollo.integration.model.ProductoPL</class-b>
-    </mapping> 
+    </mapping>
+    
+    <mapping>
+    	<class-a>com.sinensia.superpollo.business.model.DatosContacto</class-a>
+    	<class-b>com.sinensia.superpollo.integration.model.DatosContactoPL</class-b>
+    </mapping>
+    
+    <mapping>
+    	<class-a>com.sinensia.superpollo.business.model.Direccion</class-a>
+    	<class-b>com.sinensia.superpollo.integration.model.DireccionPL</class-b>
+    </mapping>
+    
+    <mapping>
+    	<class-a>com.sinensia.superpollo.business.model.Establecimiento</class-a>
+    	<class-b>com.sinensia.superpollo.integration.model.EstablecimientoPL</class-b>
+    </mapping>
     
  </mappings>

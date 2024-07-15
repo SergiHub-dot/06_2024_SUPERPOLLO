@@ -16,10 +16,10 @@ import com.sinensia.superpollo.business.model.dtos.Establecimiento1DTO;
 
 @DataJpaTest
 @Sql(scripts={"/data/h2/schema_test.sql","/data/h2/data_test.sql"})
-public class EstablecimientoRepositoryTest {
+public class EstablecimientoPLRepositoryTest {
 
 	@Autowired
-	private EstablecimientoRepository establecimientoRepository;
+	private EstablecimientoPLRepository establecimientoPLRepository;
 	
 	@Test
 	void getEstablecimiento1DTOTest() {
@@ -29,7 +29,7 @@ public class EstablecimientoRepositoryTest {
 		resultadosEsperados.add("Vaguada (Madrid)");
 		resultadosEsperados.add("Gran Via 2 (Barcelona)");
 		
-		List<Establecimiento1DTO> resultados = establecimientoRepository.getEstablecimiento1DTO();
+		List<Establecimiento1DTO> resultados = establecimientoPLRepository.getEstablecimiento1DTO();
 		
 		for(Establecimiento1DTO establecimiento1DTO: resultados) {
 			assertTrue(resultadosEsperados.contains(establecimiento1DTO.getEstablecimiento()));

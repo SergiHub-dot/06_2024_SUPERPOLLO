@@ -13,7 +13,7 @@ import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.business.services.ProductoServices;
-import com.sinensia.superpollo.integration.repositories.PedidoRepository;
+import com.sinensia.superpollo.integration.repositories.PedidoPLRepository;
 
 @RestController
 @RequestMapping("/pruebas")
@@ -26,7 +26,7 @@ public class PruebasController {
 	private PedidoServices pedidoServices;
 	
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	private PedidoPLRepository pedidoRepository;
 	
 	// http://localhost:8080/pruebas/services/pedidodto3
 	
