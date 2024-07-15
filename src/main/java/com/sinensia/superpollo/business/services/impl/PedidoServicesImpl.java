@@ -114,8 +114,7 @@ public class PedidoServicesImpl implements PedidoServices{
 
 	@Override
 	public List<Pedido3DTO> getPedido3DTOs() {
-		// TODO Auto-generated method stub
-		return null;
+		return pedidoRepository.getPedido3DTO();
 	}
 
 }

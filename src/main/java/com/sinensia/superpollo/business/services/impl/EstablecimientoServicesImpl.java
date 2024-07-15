@@ -44,8 +44,7 @@ public class EstablecimientoServicesImpl implements EstablecimientoServices{
 
 	@Override
 	public List<Establecimiento1DTO> getEstablecimiento1DTOs() {
-		// TODO Auto-generated method stub
-		return null;
+		return establecimientoRepository.getEstablecimiento1DTO();
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
+import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.business.services.ProductoServices;
@@ -26,6 +27,13 @@ public class PruebasController {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	
+	// http://localhost:8080/pruebas/services/pedidodto3
+	
+	@GetMapping("/services/pedidodto3")
+	public List<Pedido3DTO> getServicesPedido3DTOs(){
+		return pedidoServices.getPedido3DTOs();
+	}
 	
 	@GetMapping("/services/productodto1")
 	public List<Producto1DTO> getRepositoryProducto1DTOs(){
