@@ -2,6 +2,8 @@ package com.sinensia.superpollo.business.model;
 
 import java.io.Serializable;
 
+import com.sinensia.superpollo.integration.model.ProductoPL;
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,7 +13,7 @@ public class LineaDetalle implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name="CODIGO_PRODUCTO")
-	private Producto producto;
+	private ProductoPL producto;
 	
 	private int cantidad;
 	private double precio;
@@ -20,11 +22,11 @@ public class LineaDetalle implements Serializable {
 		
 	}
 
-	public Producto getProducto() {
+	public ProductoPL getProducto() {
 		return producto;
 	}
 
-	public void setProducto(Producto producto) {
+	public void setProducto(ProductoPL producto) {
 		this.producto = producto;
 	}
 

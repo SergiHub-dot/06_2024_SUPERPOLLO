@@ -15,6 +15,7 @@ import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.ProductoServices;
+import com.sinensia.superpollo.integration.model.ProductoPL;
 import com.sinensia.superpollo.integration.repositories.ProductoPLRepository;
 
 import jakarta.transaction.Transactional;
@@ -36,14 +37,23 @@ public class ProductoServicesImpl implements ProductoServices {
 			throw new IllegalStateException("El código de producto no es null. No se puede crear.");
 		}
 		
-		Producto createdProducto = productoPLRepository.save(producto);
+		ProductoPL productoPL = mapper.map(producto, ProductoPL.class);
 		
-		return createdProducto.getCodigo();
+		return productoPLRepository.save(productoPL).getCodigo();
 	}
 
 	@Override
 	public Optional<Producto> read(Long codigo) {
-		return productoPLRepository.findById(codigo);
+		
+		Optional<ProductoPL> optionalPL = productoPLRepository.findById(codigo);
+		
+		Producto producto = null;
+		
+		if(optionalPL.isPresent()) {
+			producto = mapper.map(optionalPL.get(), Producto.class);
+		}
+	
+		return Optional.ofNullable(producto);
 	}
 
 	@Override
@@ -56,7 +66,7 @@ public class ProductoServicesImpl implements ProductoServices {
 			throw new IllegalStateException("El producto " + producto.getCodigo() + " no existe. No se puede actualizar.");
 		}
 		
-		productoPLRepository.save(producto);
+		productoPLRepository.save(mapper.map(producto, ProductoPL.class));
 		
 	}
 
@@ -75,7 +85,10 @@ public class ProductoServicesImpl implements ProductoServices {
 
 	@Override
 	public List<Producto> getAll() {
-		return productoPLRepository.findAll();
+		
+		return productoPLRepository.findAll().stream()
+				.map(x -> mapper.map(x, Producto.class))
+				.toList();
 	}
 
 	@Override
@@ -106,7 +119,14 @@ public class ProductoServicesImpl implements ProductoServices {
 	@Override
 	@Transactional
 	public void variarPrecio(List<Producto> productos, double porcentaje) {
-		productoPLRepository.variarPrecio(productos, porcentaje);
+		
+		List<ProductoPL> productosPL = new ArrayList<>();
+		
+		for(Producto producto: productos) {
+			productosPL.add(mapper.map(producto, ProductoPL.class));
+		}
+		
+		productoPLRepository.variarPrecio(productosPL, porcentaje);
 	}
 
 	@Override

@@ -17,13 +17,14 @@ import org.springframework.test.context.jdbc.Sql;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.integration.model.ProductoPL;
 
 @DataJpaTest
 @Sql(scripts={"/data/h2/schema_test.sql","/data/h2/data_test.sql"})
 public class ProductoPLRepositoryTest {
 
 	@Autowired
-	private ProductoPLRepository productoRepository;
+	private ProductoPLRepository productoPLRepository;
 	
 	@Test
 	void findByPrecioBetweenTest() {
@@ -42,7 +43,7 @@ public class ProductoPLRepositoryTest {
 		
 		List<Producto> productosEsperados = Arrays.asList(producto1, producto2, producto3, producto4, producto5);
 		
-		List<Producto> productos = productoRepository.findByPrecioBetween(1.9, 2.3);
+		List<Producto> productos = productoPLRepository.findByPrecioBetween(1.9, 2.3);
 		
 		assertEquals(5, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -80,7 +81,7 @@ public class ProductoPLRepositoryTest {
 
 		}
 
-		List<Producto> productos = productoRepository.findByFechaAltaBetween(desde, hasta);
+		List<Producto> productos = productoPLRepository.findByFechaAltaBetween(desde, hasta);
 
 		assertEquals(6, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -93,7 +94,7 @@ public class ProductoPLRepositoryTest {
 		
 		producto1.setCodigo(136L);
 		
-		List<Producto> productos = productoRepository.findByDescatalogadoTrue();
+		List<Producto> productos = productoPLRepository.findByDescatalogadoTrue();
 		
 		assertEquals(1, productos.size());
 		assertTrue(productos.contains(producto1));
@@ -113,7 +114,7 @@ public class ProductoPLRepositoryTest {
 		
 		List<Producto> productosEsperados = Arrays.asList(producto1, producto2);
 		
-		List<Producto> productos = productoRepository.findByCategoria(categoria1);
+		List<Producto> productos = productoPLRepository.findByCategoria(categoria1);
 		
 		assertEquals(2, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -130,7 +131,7 @@ public class ProductoPLRepositoryTest {
 		
 		List<Producto> productosEsperados = Arrays.asList(producto1, producto2);
 		
-		List<Producto> productos = productoRepository.findByCategoriaId(3L);
+		List<Producto> productos = productoPLRepository.findByCategoriaId(3L);
 		
 		assertEquals(2, productos.size());
 		assertTrue(productos.containsAll(productosEsperados));
@@ -139,22 +140,22 @@ public class ProductoPLRepositoryTest {
 	@Test
 	void variarPrecio1Test() {
 		
-		Producto producto1 = new Producto();
-		Producto producto2 = new Producto();
+		ProductoPL producto1 = new ProductoPL();
+		ProductoPL producto2 = new ProductoPL();
 		
 		producto1.setCodigo(100L);
 		producto2.setCodigo(103L);
 		
-		List<Producto> productos = Arrays.asList(producto1, producto2);
+		List<ProductoPL> productos = Arrays.asList(producto1, producto2);
 		
-		productoRepository.variarPrecio(productos, 50.0);
+		productoPLRepository.variarPrecio(productos, 50.0);
 
 		producto1 = null;
 		producto2 = null;
 		
-		producto1 = productoRepository.findById(100L).get();
-		producto2 = productoRepository.findById(103L).get();
-		Producto producto3 = productoRepository.findById(102L).get();
+		producto1 = productoPLRepository.findById(100L).get();
+		producto2 = productoPLRepository.findById(103L).get();
+		ProductoPL producto3 = productoPLRepository.findById(102L).get();
 		
 		assertEquals(9.0, producto1.getPrecio());
 		assertEquals(4.5, producto2.getPrecio());
@@ -167,11 +168,11 @@ public class ProductoPLRepositoryTest {
 		
 		long[] codigos = {100L, 103L};
 
-		productoRepository.variarPrecio(codigos, 50.0);
+		productoPLRepository.variarPrecio(codigos, 50.0);
 
-		Producto producto1 = productoRepository.findById(100L).get();
-		Producto producto2 = productoRepository.findById(103L).get();
-		Producto producto3 = productoRepository.findById(102L).get();
+		ProductoPL producto1 = productoPLRepository.findById(100L).get();
+		ProductoPL producto2 = productoPLRepository.findById(103L).get();
+		ProductoPL producto3 = productoPLRepository.findById(102L).get();
 		
 		assertEquals(9.0, producto1.getPrecio());
 		assertEquals(4.5, producto2.getPrecio());
@@ -197,7 +198,7 @@ public class ProductoPLRepositoryTest {
 		resultadosEsperados.put(11L, 7L);
 		resultadosEsperados.put(12L, 0L);
 		
-		List<Object[]> resultados = productoRepository.getEstadisticaNumeroProductoCategoria();
+		List<Object[]> resultados = productoPLRepository.getEstadisticaNumeroProductoCategoria();
 		
 		for(Object[] objects: resultados) {
 			Long idCategoria = ((Categoria)objects[0]).getId();
@@ -226,7 +227,7 @@ public class ProductoPLRepositoryTest {
 		resultadosEsperados.put(11L, 2.67);
 		resultadosEsperados.put(12L, null);
 		
-		List<Object[]> resultados = productoRepository.getEstadisticaPrecioMedioProductoCategoria();
+		List<Object[]> resultados = productoPLRepository.getEstadisticaPrecioMedioProductoCategoria();
 		
 		for(Object[] objects: resultados) {
 			Long idCategoria = ((Categoria)objects[0]).getId();

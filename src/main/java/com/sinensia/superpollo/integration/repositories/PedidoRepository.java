@@ -21,16 +21,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 		 + "     FROM Pedido p JOIN p.lineasDetalle ld "
 		 + " GROUP BY p.numero")
 	List<Object[]> getPedido2DTO();
-	
-	
-	/*
-	 * private Long numero;
-	private String establecimiento;
-	private String estado;
-	private String comentario; // Mostramos solo los 20 primeros caracteres y añadimos...   Ejemplo: "No entragra los vaso..."
-	private String trimestre; 
-	 */
-	
+		
 	@Query("SELECT new com.sinensia.superpollo.business.model.dtos.Pedido3DTO(p.numero, "
 		 + "                                                                  p.establecimiento.nombreComercial, "
 		 + "                                                                  SUBSTRING(p.estado, 0), "
