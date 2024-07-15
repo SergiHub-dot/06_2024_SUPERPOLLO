@@ -20,10 +20,10 @@ import com.sinensia.superpollo.business.model.Producto;
 
 @DataJpaTest
 @Sql(scripts={"/data/h2/schema_test.sql","/data/h2/data_test.sql"})
-public class ProductoRepositoryTest {
+public class ProductoPLRepositoryTest {
 
 	@Autowired
-	private ProductoRepository productoRepository;
+	private ProductoPLRepository productoRepository;
 	
 	@Test
 	void findByPrecioBetweenTest() {

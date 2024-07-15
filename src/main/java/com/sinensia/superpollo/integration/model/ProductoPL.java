@@ -1,20 +1,41 @@
-package com.sinensia.superpollo.business.model;
+package com.sinensia.superpollo.integration.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Producto implements Serializable{
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
+@Entity
+@Table(name="PRODUCTOS")
+public class ProductoPL implements Serializable{
+
+	@Id
+	@GeneratedValue(generator="PRODUCTO_SEQ")
 	private Long codigo;
+	
 	private String nombre;
 	private String descripcion;
+	
+	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
+	
 	private double precio;
-	private Categoria categoria;
+	
+	@ManyToOne
+	@JoinColumn(name="ID_CATEGORIA")
+	private CategoriaPL categoria;
+	
 	private boolean descatalogado;
 	
-	public Producto() {
+	public ProductoPL() {
 		
 	}
 
@@ -58,11 +79,11 @@ public class Producto implements Serializable{
 		this.precio = precio;
 	}
 
-	public Categoria getCategoria() {
+	public CategoriaPL getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
+	public void setCategoria(CategoriaPL categoria) {
 		this.categoria = categoria;
 	}
 
@@ -87,13 +108,13 @@ public class Producto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Producto other = (Producto) obj;
+		ProductoPL other = (ProductoPL) obj;
 		return Objects.equals(codigo, other.codigo);
 	}
 
 	@Override
 	public String toString() {
-		return "Producto [codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + ", fechaAlta="
+		return "ProductoPL [codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + ", fechaAlta="
 				+ fechaAlta + ", precio=" + precio + ", categoria=" + categoria + ", descatalogado=" + descatalogado
 				+ "]";
 	}

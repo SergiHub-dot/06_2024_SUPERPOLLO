@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.ProductoServices;
-import com.sinensia.superpollo.integration.repositories.ProductoRepository;
+import com.sinensia.superpollo.integration.repositories.ProductoPLRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -22,7 +23,10 @@ import jakarta.transaction.Transactional;
 public class ProductoServicesImpl implements ProductoServices {
 
 	@Autowired
-	private ProductoRepository productoRepository;
+	private ProductoPLRepository productoPLRepository;
+	
+	@Autowired
+	private DozerBeanMapper mapper;
 	
 	@Override
 	@Transactional
@@ -32,27 +36,27 @@ public class ProductoServicesImpl implements ProductoServices {
 			throw new IllegalStateException("El código de producto no es null. No se puede crear.");
 		}
 		
-		Producto createdProducto = productoRepository.save(producto);
+		Producto createdProducto = productoPLRepository.save(producto);
 		
 		return createdProducto.getCodigo();
 	}
 
 	@Override
 	public Optional<Producto> read(Long codigo) {
-		return productoRepository.findById(codigo);
+		return productoPLRepository.findById(codigo);
 	}
 
 	@Override
 	@Transactional
 	public void update(Producto producto) {
 		
-		boolean existe = productoRepository.existsById(producto.getCodigo());
+		boolean existe = productoPLRepository.existsById(producto.getCodigo());
 		
 		if(!existe) {
 			throw new IllegalStateException("El producto " + producto.getCodigo() + " no existe. No se puede actualizar.");
 		}
 		
-		productoRepository.save(producto);
+		productoPLRepository.save(producto);
 		
 	}
 
@@ -60,61 +64,61 @@ public class ProductoServicesImpl implements ProductoServices {
 	@Transactional
 	public void delete(Long codigo) {
 		
-		boolean existe = productoRepository.existsById(codigo);
+		boolean existe = productoPLRepository.existsById(codigo);
 		
 		if(!existe) {
 			throw new IllegalStateException("No existe el producto con código " + codigo);
 		}
 		
-		productoRepository.deleteById(codigo);	
+		productoPLRepository.deleteById(codigo);	
 	}
 
 	@Override
 	public List<Producto> getAll() {
-		return productoRepository.findAll();
+		return productoPLRepository.findAll();
 	}
 
 	@Override
 	public List<Producto> getBetweenPriceRange(double min, double max) {
-		return productoRepository.findByPrecioBetween(min, max);
+		return productoPLRepository.findByPrecioBetween(min, max);
 	}
 
 	@Override
 	public List<Producto> getBetweenDates(Date desde, Date hasta) {
-		return productoRepository.findByFechaAltaBetween(desde, hasta);
+		return productoPLRepository.findByFechaAltaBetween(desde, hasta);
 	}
 
 	@Override
 	public List<Producto> getDescatalogados() {
-		return productoRepository.findByDescatalogadoTrue();
+		return productoPLRepository.findByDescatalogadoTrue();
 	}
 
 	@Override
 	public List<Producto> getByCategoria(Categoria categoria) {		
-		return productoRepository.findByCategoria(categoria);
+		return productoPLRepository.findByCategoria(categoria);
 	}
 
 	@Override
 	public int getNumeroTotalProductos() {
-		return (int) productoRepository.count();
+		return (int) productoPLRepository.count();
 	}
 
 	@Override
 	@Transactional
 	public void variarPrecio(List<Producto> productos, double porcentaje) {
-		productoRepository.variarPrecio(productos, porcentaje);
+		productoPLRepository.variarPrecio(productos, porcentaje);
 	}
 
 	@Override
 	@Transactional
 	public void variarPrecio(long[] codigos, double porcentaje) {
-		productoRepository.variarPrecio(codigos, porcentaje);
+		productoPLRepository.variarPrecio(codigos, porcentaje);
 	}
 
 	@Override
 	public Map<Categoria, Integer> getEstadisticaNumeroProductosPorCategoria() {
 		
-		List<Object[]> resultados = productoRepository.getEstadisticaNumeroProductoCategoria();
+		List<Object[]> resultados = productoPLRepository.getEstadisticaNumeroProductoCategoria();
 		
 		Map<Categoria, Integer> estadistica = new HashMap<>();
 		
@@ -130,7 +134,7 @@ public class ProductoServicesImpl implements ProductoServices {
 	@Override
 	public Map<Categoria, Double> getEstadisticaPrecioMedioProductosPorCategoria() {
 		
-		List<Object[]> resultados = productoRepository.getEstadisticaPrecioMedioProductoCategoria();
+		List<Object[]> resultados = productoPLRepository.getEstadisticaPrecioMedioProductoCategoria();
 		
 		Map<Categoria, Double> estadistica = new HashMap<>();
 		
@@ -146,7 +150,7 @@ public class ProductoServicesImpl implements ProductoServices {
 	@Override
 	public List<Producto1DTO> getProducto1DTOs() {
 		
-		List<Object[]> resultados = productoRepository.findProducto1DTOs();
+		List<Object[]> resultados = productoPLRepository.findProducto1DTOs();
 		
 		List<Producto1DTO> productos1DTO = new ArrayList<>();
 		
