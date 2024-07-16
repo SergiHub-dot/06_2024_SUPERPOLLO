@@ -30,7 +30,7 @@ public class CategoriaServicesImpl implements CategoriaServices{
 	public Long create(Categoria categoria) {
 		
 		if(categoria.getId() != null) {
-			throw new IllegalStateException("La categoría " + categoria.getNombre() + " ya tiene id. No se puede crear.");
+			throw new IllegalStateException("Para crear una categoría el id ha de ser null");
 		}
 		
 		CategoriaPL categoriaPL = mapper.map(categoria, CategoriaPL.class);
