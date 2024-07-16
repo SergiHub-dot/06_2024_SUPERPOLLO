@@ -30,10 +30,9 @@ public class EstablecimientoServicesImpl implements EstablecimientoServices{
 	public Long create(Establecimiento establecimiento) {
 		
 		if(establecimiento.getCodigo() != null) {
-			throw new IllegalStateException("El establecimiento " + establecimiento.getNombreComercial() + " ya tiene código. No se puede crear.");
+			throw new IllegalStateException("Para crear un establecimiento el código ha de ser null");
 		}
 		
-	
 		return establecimientoPLRepository.save(mapper.map(establecimiento, EstablecimientoPL.class)).getCodigo();
 	}
 
