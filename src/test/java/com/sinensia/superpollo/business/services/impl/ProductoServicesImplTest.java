@@ -46,6 +46,11 @@ public class ProductoServicesImplTest {
 	private ProductoPL productoPL2;
 	private Producto producto1;
 	private Producto producto2;
+	private List<ProductoPL> productosPL;
+	private CategoriaPL categoriaPL1;
+	private CategoriaPL categoriaPL2;
+	private Categoria categoria1;
+	private Categoria categoria2;
 	
 	@BeforeEach
 	void init() {
@@ -147,9 +152,7 @@ public class ProductoServicesImplTest {
 	
 	@Test
 	void getAllTest() {
-		
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
-		
+	
 		when(productoPLRepository.findAll()).thenReturn(productosPL);
 		when(mapper.map(productoPL1, Producto.class)).thenReturn(producto1);
 		when(mapper.map(productoPL2, Producto.class)).thenReturn(producto2);
@@ -162,8 +165,6 @@ public class ProductoServicesImplTest {
 	
 	@Test
 	void getBetweenPriceRangeTest() {
-		
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
 		
 		when(productoPLRepository.findByPrecioBetween(10.0, 100.0)).thenReturn(productosPL);
 		when(mapper.map(productoPL1, Producto.class)).thenReturn(producto1);
@@ -181,8 +182,6 @@ public class ProductoServicesImplTest {
 		Date desde = new Date(1000000000L);
 		Date hasta = new Date(2000000000L);
 		
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
-		
 		when(productoPLRepository.findByFechaAltaBetween(desde, hasta)).thenReturn(productosPL);
 		when(mapper.map(productoPL1, Producto.class)).thenReturn(producto1);
 		when(mapper.map(productoPL2, Producto.class)).thenReturn(producto2);
@@ -196,9 +195,7 @@ public class ProductoServicesImplTest {
 	
 	@Test
 	void getDescatalogadosTest() {
-		
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
-		
+	
 		when(productoPLRepository.findByDescatalogadoTrue()).thenReturn(productosPL);
 		when(mapper.map(productoPL1, Producto.class)).thenReturn(producto1);
 		when(mapper.map(productoPL2, Producto.class)).thenReturn(producto2);
@@ -213,20 +210,12 @@ public class ProductoServicesImplTest {
 	@Test
 	void getByCategoriaTest() {
 		
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
-		
-		Categoria categoria = new Categoria();
-		categoria.setId(1L);
-		
-		CategoriaPL categoriaPL = new CategoriaPL();
-		categoriaPL.setId(1L);
-		
-		when(productoPLRepository.findByCategoria(categoriaPL)).thenReturn(productosPL);
-		when(mapper.map(categoria, CategoriaPL.class)).thenReturn(categoriaPL);
+		when(productoPLRepository.findByCategoria(categoriaPL1)).thenReturn(productosPL);
+		when(mapper.map(categoria1, CategoriaPL.class)).thenReturn(categoriaPL1);
 		when(mapper.map(productoPL1, Producto.class)).thenReturn(producto1);
 		when(mapper.map(productoPL2, Producto.class)).thenReturn(producto2);
 		
-		List<Producto> productos = productoServicesImpl.getByCategoria(categoria);
+		List<Producto> productos = productoServicesImpl.getByCategoria(categoria1);
 		
 		assertEquals(2, productos.size());
 		assertTrue(productos.containsAll(Arrays.asList(producto1, producto2)));
@@ -246,7 +235,6 @@ public class ProductoServicesImplTest {
 	void variarPrecio1Test() {
 		
 		List<Producto> productos = Arrays.asList(producto1, producto2);
-		List<ProductoPL> productosPL = Arrays.asList(productoPL1, productoPL2);
 		
 		when(mapper.map(producto1, ProductoPL.class)).thenReturn(productoPL1);
 		when(mapper.map(producto2, ProductoPL.class)).thenReturn(productoPL2);
@@ -269,26 +257,14 @@ public class ProductoServicesImplTest {
 	@Test
 	void getEstadisticaNumeroProductosPorCategoriaTest() {
 		
-		CategoriaPL categoria1PL = new CategoriaPL();
-		CategoriaPL categoria2PL = new CategoriaPL();
-		
-		categoria1PL.setId(1L);
-		categoria2PL.setId(2L);
-		
-		Categoria categoria1 = new Categoria();
-		Categoria categoria2 = new Categoria();
-		
-		categoria1.setId(1L);
-		categoria2.setId(2L);
-		
-		Object[] fila1 = {categoria1PL, 5L};
-		Object[] fila2 = {categoria2PL, 7L};
+		Object[] fila1 = {categoriaPL1, 5L};
+		Object[] fila2 = {categoriaPL2, 7L};
 		
 		List<Object[]> tablaResultados = Arrays.asList(fila1, fila2);
 		
 		when(productoPLRepository.getEstadisticaNumeroProductoCategoria()).thenReturn(tablaResultados);
-		when(mapper.map(categoria1PL, Categoria.class)).thenReturn(categoria1);
-		when(mapper.map(categoria2PL, Categoria.class)).thenReturn(categoria2);
+		when(mapper.map(categoriaPL1, Categoria.class)).thenReturn(categoria1);
+		when(mapper.map(categoriaPL2, Categoria.class)).thenReturn(categoria2);
 		
 		Map<Categoria, Integer> estadistica = productoServicesImpl.getEstadisticaNumeroProductosPorCategoria();
 		
@@ -301,26 +277,14 @@ public class ProductoServicesImplTest {
 	@Test
 	void getEstadisticaPrecioMedioProductosPorCategoriaTest() {
 		
-		CategoriaPL categoria1PL = new CategoriaPL();
-		CategoriaPL categoria2PL = new CategoriaPL();
-		
-		categoria1PL.setId(1L);
-		categoria2PL.setId(2L);
-		
-		Categoria categoria1 = new Categoria();
-		Categoria categoria2 = new Categoria();
-		
-		categoria1.setId(1L);
-		categoria2.setId(2L);
-		
-		Object[] fila1 = {categoria1PL, 5.6};
-		Object[] fila2 = {categoria2PL, 10.8};
+		Object[] fila1 = {categoriaPL1, 5.6};
+		Object[] fila2 = {categoriaPL2, 10.8};
 		
 		List<Object[]> tablaResultados = Arrays.asList(fila1, fila2);
 		
 		when(productoPLRepository.getEstadisticaPrecioMedioProductoCategoria()).thenReturn(tablaResultados);
-		when(mapper.map(categoria1PL, Categoria.class)).thenReturn(categoria1);
-		when(mapper.map(categoria2PL, Categoria.class)).thenReturn(categoria2);
+		when(mapper.map(categoriaPL1, Categoria.class)).thenReturn(categoria1);
+		when(mapper.map(categoriaPL2, Categoria.class)).thenReturn(categoria2);
 		
 		Map<Categoria, Double> estadistica = productoServicesImpl.getEstadisticaPrecioMedioProductosPorCategoria();
 		
@@ -372,6 +336,20 @@ public class ProductoServicesImplTest {
 		
 		producto1.setCodigo(100L);
 		producto2.setCodigo(200L);
+		
+		productosPL = Arrays.asList(productoPL1, productoPL2);
+		
+		categoriaPL1 = new CategoriaPL();
+		categoriaPL2 = new CategoriaPL();
+		
+		categoriaPL1.setId(1L);
+		categoriaPL2.setId(2L);
+		
+		categoria1 = new Categoria();
+		categoria2 = new Categoria();
+		
+		categoria1.setId(1L);
+		categoria2.setId(2L);
 		
 	}
 	
