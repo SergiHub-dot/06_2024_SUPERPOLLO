@@ -10,9 +10,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.model.Producto;
+import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.integration.model.CategoriaPL;
 import com.sinensia.superpollo.integration.model.ProductoPL;
 import com.sinensia.superpollo.integration.repositories.ProductoPLRepository;
@@ -282,9 +285,9 @@ public class ProductoServicesImplTest {
 		Object[] fila1 = {categoria1PL, 5L};
 		Object[] fila2 = {categoria2PL, 7L};
 		
-		List<Object[]> resultado = Arrays.asList(fila1, fila2);
+		List<Object[]> tablaResultados = Arrays.asList(fila1, fila2);
 		
-		when(productoPLRepository.getEstadisticaNumeroProductoCategoria()).thenReturn(resultado);
+		when(productoPLRepository.getEstadisticaNumeroProductoCategoria()).thenReturn(tablaResultados);
 		when(mapper.map(categoria1PL, Categoria.class)).thenReturn(categoria1);
 		when(mapper.map(categoria2PL, Categoria.class)).thenReturn(categoria2);
 		
@@ -314,9 +317,9 @@ public class ProductoServicesImplTest {
 		Object[] fila1 = {categoria1PL, 5.6};
 		Object[] fila2 = {categoria2PL, 10.8};
 		
-		List<Object[]> resultado = Arrays.asList(fila1, fila2);
+		List<Object[]> tablaResultados = Arrays.asList(fila1, fila2);
 		
-		when(productoPLRepository.getEstadisticaPrecioMedioProductoCategoria()).thenReturn(resultado);
+		when(productoPLRepository.getEstadisticaPrecioMedioProductoCategoria()).thenReturn(tablaResultados);
 		when(mapper.map(categoria1PL, Categoria.class)).thenReturn(categoria1);
 		when(mapper.map(categoria2PL, Categoria.class)).thenReturn(categoria2);
 		
@@ -330,9 +333,25 @@ public class ProductoServicesImplTest {
 	@Test
 	void getProducto1DTOsTest() {
 		
+		Object[] fila1 = {"Producto_1", 5.6, "Categoria_A"};
+		Object[] fila2 = {"Producto_2", 10.8, "Categoria_B"};
+	
+		List<Object[]> tablaResultados = Arrays.asList(fila1, fila2);
 		
+		when(productoPLRepository.findProducto1DTOs()).thenReturn(tablaResultados);
 		
-		fail("Not implemented yet!");
+		List<Producto1DTO> productos1DTO = productoServicesImpl.getProducto1DTOs();
+		
+		Set<String> resultadosAsString = new HashSet<>();
+		
+		for(Producto1DTO producto1DTO: productos1DTO) {
+			resultadosAsString.add(producto1DTO.getNombre() + "_" + producto1DTO.getPrecio() + "_" + producto1DTO.getCategoria());
+		}
+		
+		assertEquals(2, productos1DTO.size());
+		assertTrue(resultadosAsString.contains("Producto_1_5.6_Categoria_A"));
+		assertTrue(resultadosAsString.contains("Producto_2_10.8_Categoria_B"));
+		
 	}
 	
 	// **********************************************************
