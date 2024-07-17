@@ -35,7 +35,7 @@ public class ProductoServicesImpl implements ProductoServices {
 	public Long create(Producto producto) {
 		
 		if(producto.getCodigo() != null) {
-			throw new IllegalStateException("El código de producto no es null. No se puede crear.");
+			throw new IllegalStateException("Para crear un producto el código ha de ser null");
 		}
 		
 		ProductoPL productoPL = mapper.map(producto, ProductoPL.class);
@@ -141,9 +141,9 @@ public class ProductoServicesImpl implements ProductoServices {
 		Map<Categoria, Integer> estadistica = new HashMap<>();
 		
 		for(Object[] objects: resultados) {
-			Categoria categoria = (Categoria) objects[0];
+			CategoriaPL categoriaPL = (CategoriaPL) objects[0];
 			Integer cantidad = ((Long) objects[1]).intValue();
-			estadistica.put(categoria, cantidad);
+			estadistica.put(mapper.map(categoriaPL, Categoria.class), cantidad);
 		}
 		
 		return estadistica;
@@ -157,9 +157,9 @@ public class ProductoServicesImpl implements ProductoServices {
 		Map<Categoria, Double> estadistica = new HashMap<>();
 		
 		for(Object[] objects: resultados) {
-			Categoria categoria = (Categoria) objects[0];
+			CategoriaPL categoriaPL = (CategoriaPL) objects[0];
 			Double precioMedio = (Double) objects[1];
-			estadistica.put(categoria, precioMedio);
+			estadistica.put(mapper.map(categoriaPL, Categoria.class), precioMedio);
 		}
 		
 		return estadistica;

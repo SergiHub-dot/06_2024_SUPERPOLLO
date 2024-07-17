@@ -58,23 +58,13 @@ public class CategoriaServicesImplTest {
 	}
 	
 	@Test
-	void create_con_id_NO_null() {
+	void create_categoria_con_id_NO_null() {
 		
 		Exception exception = assertThrows(IllegalStateException.class, ()->{
 			categoriaServicesImpl.create(categoria1);
 		});
 		
 		assertEquals("Para crear una categoría el id ha de ser null", exception.getMessage());
-	}
-	
-	@Test
-	void read_no_existente() {
-		
-		when(categoriaPLRepository.findById(587L)).thenReturn(Optional.empty());
-		
-		Optional<Categoria> optional = categoriaServicesImpl.read(587L);
-		
-		assertTrue(optional.isEmpty());
 	}
 	
 	@Test
@@ -88,6 +78,16 @@ public class CategoriaServicesImplTest {
 		assertTrue(optional.isPresent());
 		assertEquals(100L, optional.get().getId());
 		
+	}
+	
+	@Test
+	void read_no_existente() {
+		
+		when(categoriaPLRepository.findById(587L)).thenReturn(Optional.empty());
+		
+		Optional<Categoria> optional = categoriaServicesImpl.read(587L);
+		
+		assertTrue(optional.isEmpty());
 	}
 	
 	@Test
