@@ -3,7 +3,6 @@ package com.sinensia.superpollo.presentation.restcontrollers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +21,11 @@ import com.sinensia.superpollo.presentation.config.PresentationException;
 @RequestMapping("/establecimientos")
 public class EstablecimientoController {
 
-	@Autowired
 	private EstablecimientoServices establecimientoServices;
+	
+	public EstablecimientoController(EstablecimientoServices establecimientoServices) {
+		this.establecimientoServices = establecimientoServices;
+	}
 	
 	@GetMapping
 	public List<Establecimiento> getEstablecimientos(){		

@@ -3,7 +3,6 @@ package com.sinensia.superpollo.presentation.restcontrollers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +25,11 @@ import com.sinensia.superpollo.presentation.config.PresentationException;
 @RequestMapping("/productos")
 public class ProductoController {
 
-	@Autowired
 	private ProductoServices productoServices;
+	
+	public ProductoController(ProductoServices productoServices) {
+		this.productoServices = productoServices;
+	}
 	
 	@GetMapping
 	public List<Producto> getProductos(@RequestParam(required = false) Double min, 

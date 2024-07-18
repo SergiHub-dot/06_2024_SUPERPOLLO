@@ -3,8 +3,6 @@ package com.sinensia.superpollo.presentation.restcontrollers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +21,11 @@ import com.sinensia.superpollo.presentation.config.PresentationException;
 @RequestMapping("/categorias")
 public class CategoriaController {
 
-	@Autowired
-	@Qualifier("categoriaServicesImpl")
 	private CategoriaServices categoriaServices;
+	
+	public CategoriaController(CategoriaServices categoriaServices) {
+		this.categoriaServices = categoriaServices;
+	}
 	
 	@GetMapping
 	public List<Categoria> getCategorias(){
