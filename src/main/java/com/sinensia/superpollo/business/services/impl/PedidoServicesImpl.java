@@ -38,7 +38,7 @@ public class PedidoServicesImpl implements PedidoServices{
 	public Long create(Pedido pedido) {
 		
 		if(pedido.getNumero() != null) {
-			throw new IllegalStateException("El número de pedido no es null. No se puede crear.");
+			throw new IllegalStateException("Para crear un pedido el número ha de ser null");
 		}
 		
 		pedido.setEstado(EstadoPedido.NUEVO);
@@ -96,13 +96,12 @@ public class PedidoServicesImpl implements PedidoServices{
 			Long numero = (Long) objects[0];
 			Date fechaHora = (Date) objects[1];
 			String nombreEstablecimiento = (String) objects[2];
-			EstadoPedido estado = (EstadoPedido) objects[3];
+			String estado = (String) objects[3];
 			
 			String fecha = SDF_1.format(fechaHora);
 			String hora = SDF_2.format(fechaHora);
-			String strEstado = estado.toString();
-			
-			Pedido1DTO pedido1DTO = new Pedido1DTO(numero, fecha, hora, nombreEstablecimiento, strEstado);
+		
+			Pedido1DTO pedido1DTO = new Pedido1DTO(numero, fecha, hora, nombreEstablecimiento, estado);
 			pedidos1DTO.add(pedido1DTO);
 		}
 		
@@ -120,7 +119,7 @@ public class PedidoServicesImpl implements PedidoServices{
 			
 			Long numero = (Long) objects[0];
 			Date fechaHora = (Date) objects[1];
-			String estado = ((EstadoPedido) objects[2]).toString();
+			String estado = ((String) objects[2]).toString();
 			int numeroLineas = (Integer) objects[3];
 			Double importeTotal = (Double) objects[4];
 			
