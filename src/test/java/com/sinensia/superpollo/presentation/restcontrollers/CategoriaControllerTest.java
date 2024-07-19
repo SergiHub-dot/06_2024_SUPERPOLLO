@@ -1,9 +1,10 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -67,9 +68,9 @@ public class CategoriaControllerTest {
 		MvcResult mvcResult = miniPostman.perform(get("/categorias/10")).andExpect(status().isOk()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String categoriasAsJSON = objectMapper.writeValueAsString(categoria1);
+		String categoriaAsJSON = objectMapper.writeValueAsString(categoria1);
 		
-		assertEquals(categoriasAsJSON,strBodyRespuesta);
+		assertEquals(categoriaAsJSON,strBodyRespuesta);
 		
 	}
 	
@@ -81,9 +82,40 @@ public class CategoriaControllerTest {
 		MvcResult mvcResult = miniPostman.perform(get("/categorias/10")).andExpect(status().isNotFound()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String categoriasAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra la categoria 10"));
+		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra la categoria 10"));
 		
-		assertEquals(categoriasAsJSON,strBodyRespuesta);
+		assertEquals(mensajeError, strBodyRespuesta);
+		
+	}
+	
+	@Test
+	void creamos_categoria_ok() throws Exception {
+		
+		categoria1.setId(null);
+		
+		when(categoriaServices.create(categoria1)).thenReturn(34456L);
+		
+		String requestBody = objectMapper.writeValueAsString(categoria1);
+		
+		miniPostman.perform(post("/categorias").content(requestBody).contentType("application/json"))
+			.andExpect(status().isCreated())
+			.andExpect(header().string("Location","http://localhost/categorias/34456"));
+	}
+	
+	@Test
+	void creamos_categoria_con_id_NO_null() throws Exception{
+		
+		when(categoriaServices.create(categoria1)).thenThrow(new IllegalStateException("Para crear una categoría el id ha de ser null"));
+		
+		String requestBody = objectMapper.writeValueAsString(categoria1);
+		
+		MvcResult mvcResult = miniPostman.perform(post("/categorias").content(requestBody).contentType("application/json"))
+				.andExpect(status().isBadRequest()).andReturn();
+		
+		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Para crear una categoría el id ha de ser null"));
+		
+		assertEquals(mensajeError, strBodyRespuesta);
 		
 	}
 	
