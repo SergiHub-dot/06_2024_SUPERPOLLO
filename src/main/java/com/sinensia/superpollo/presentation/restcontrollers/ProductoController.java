@@ -75,16 +75,18 @@ public class ProductoController {
 		} 
 	}
 	
-	@PutMapping
+	@PutMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@RequestBody Producto producto){
+	public void update(@PathVariable Long codigo, @RequestBody Producto producto){
+		
+		producto.setCodigo(codigo);
 		
 		try {
 			productoServices.update(producto);
 		} catch(IllegalStateException e) {
 			throw new PresentationException("No se encuentra el producto " + producto.getCodigo(), HttpStatus.NOT_FOUND);
 		} catch(Exception e) {
-			throw new PresentationException("Ha habido un problema en la petición. ", HttpStatus.BAD_REQUEST);
+			throw new PresentationException("Ha habido un problema en la petición.", HttpStatus.BAD_REQUEST);
 		}	
 	}
 }

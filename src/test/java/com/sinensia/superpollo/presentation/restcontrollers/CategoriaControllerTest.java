@@ -28,7 +28,7 @@ import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 public class CategoriaControllerTest {
 
 	@Autowired
-	private MockMvc miniPostman;
+	private MockMvc mockMvc;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -51,7 +51,7 @@ public class CategoriaControllerTest {
 		
 		when(categoriaServices.getAll()).thenReturn(categorias);
 		
-		MvcResult mvcResult = miniPostman.perform(get("/categorias")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/categorias")).andExpect(status().isOk()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		String categoriasAsJSON = objectMapper.writeValueAsString(categorias);
@@ -65,7 +65,7 @@ public class CategoriaControllerTest {
 		
 		when(categoriaServices.read(10L)).thenReturn(Optional.of(categoria1));
 		
-		MvcResult mvcResult = miniPostman.perform(get("/categorias/10")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/categorias/10")).andExpect(status().isOk()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		String categoriaAsJSON = objectMapper.writeValueAsString(categoria1);
@@ -79,7 +79,7 @@ public class CategoriaControllerTest {
 		
 		when(categoriaServices.read(10L)).thenReturn(Optional.empty());
 		
-		MvcResult mvcResult = miniPostman.perform(get("/categorias/10")).andExpect(status().isNotFound()).andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/categorias/10")).andExpect(status().isNotFound()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra la categoria 10"));
@@ -97,7 +97,7 @@ public class CategoriaControllerTest {
 		
 		String requestBody = objectMapper.writeValueAsString(categoria1);
 		
-		miniPostman.perform(post("/categorias").content(requestBody).contentType("application/json"))
+		mockMvc.perform(post("/categorias").content(requestBody).contentType("application/json"))
 			.andExpect(status().isCreated())
 			.andExpect(header().string("Location","http://localhost/categorias/34456"));
 	}
@@ -109,7 +109,7 @@ public class CategoriaControllerTest {
 		
 		String requestBody = objectMapper.writeValueAsString(categoria1);
 		
-		MvcResult mvcResult = miniPostman.perform(post("/categorias").content(requestBody).contentType("application/json"))
+		MvcResult mvcResult = mockMvc.perform(post("/categorias").content(requestBody).contentType("application/json"))
 				.andExpect(status().isBadRequest()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);

@@ -67,8 +67,7 @@ public class ProductoServicesImpl implements ProductoServices {
 			throw new IllegalStateException("El producto " + producto.getCodigo() + " no existe. No se puede actualizar.");
 		}
 		
-		productoPLRepository.save(mapper.map(producto, ProductoPL.class));
-		
+		productoPLRepository.save(mapper.map(producto, ProductoPL.class));		
 	}
 
 	@Override
