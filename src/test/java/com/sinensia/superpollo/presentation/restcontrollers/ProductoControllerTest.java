@@ -95,7 +95,6 @@ public class ProductoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(get("/productos/10")).andExpect(status().isOk()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String productoAsJSON = objectMapper.writeValueAsString(producto1);
 		
 		assertEquals(productoAsJSON, strBodyRespuesta);
@@ -110,7 +109,6 @@ public class ProductoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(get("/productos/10")).andExpect(status().isNotFound()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String productoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el producto 10"));
 		
 		assertEquals(productoAsJSON, strBodyRespuesta);
@@ -165,7 +163,6 @@ public class ProductoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(delete("/productos/10")).andExpect(status().isNotFound()).andReturn();
     	
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String productoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el producto 10"));
 		
 		assertEquals(productoAsJSON, strBodyRespuesta);

@@ -73,7 +73,6 @@ public class PedidoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(get("/pedidos/10")).andExpect(status().isOk()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String pedidoAsJSON = objectMapper.writeValueAsString(pedido1);
 		
 		assertEquals(pedidoAsJSON, strBodyRespuesta);
@@ -88,7 +87,6 @@ public class PedidoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(get("/pedidos/10")).andExpect(status().isNotFound()).andReturn();
 		
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String pedidoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el pedido 10"));
 		
 		assertEquals(pedidoAsJSON, strBodyRespuesta);
@@ -143,7 +141,6 @@ public class PedidoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(delete("/pedidos/10")).andExpect(status().isNotFound()).andReturn();
     	
 		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
 		String pedidoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el pedido 10"));
 		
 		assertEquals(pedidoAsJSON, strBodyRespuesta);
