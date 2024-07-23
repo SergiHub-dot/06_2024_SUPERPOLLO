@@ -1,37 +1,27 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sinensia.superpollo.business.model.Categoria;
 import com.sinensia.superpollo.business.services.CategoriaServices;
 import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @WebMvcTest(value=CategoriaController.class)
-public class CategoriaControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
+public class CategoriaControllerTest extends AbstractControllerTest{
 	
 	@MockBean
 	private CategoriaServices categoriaServices;
@@ -53,10 +43,7 @@ public class CategoriaControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/categorias")).andExpect(status().isOk()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String categoriasAsJSON = objectMapper.writeValueAsString(categorias);
-		
-		assertEquals(categoriasAsJSON,strBodyRespuesta);
+		checkResponseBody(mvcResult, categorias);
 		
 	}
 	
@@ -67,10 +54,7 @@ public class CategoriaControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/categorias/10")).andExpect(status().isOk()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String categoriaAsJSON = objectMapper.writeValueAsString(categoria1);
-		
-		assertEquals(categoriaAsJSON,strBodyRespuesta);
+		checkResponseBody(mvcResult, categoria1);
 		
 	}
 	
@@ -81,10 +65,7 @@ public class CategoriaControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/categorias/10")).andExpect(status().isNotFound()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra la categoria 10"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra la categoria 10"));
 		
 	}
 	
@@ -111,11 +92,8 @@ public class CategoriaControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(post("/categorias").content(requestBody).contentType("application/json"))
 				.andExpect(status().isBadRequest()).andReturn();
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Para crear una categoría el id ha de ser null"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+			
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("Para crear una categoría el id ha de ser null"));
 		
 	}
 	

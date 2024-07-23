@@ -1,6 +1,5 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,32 +10,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.services.PedidoServices;
 import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @WebMvcTest(value=PedidoController.class)
-public class PedidoControllerTest {
-	
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
+public class PedidoControllerTest extends AbstractControllerTest{
 	
 	@MockBean
 	private PedidoServices pedidoServices;
@@ -57,11 +46,8 @@ public class PedidoControllerTest {
 		when(pedidoServices.getAll()).thenReturn(pedidos);
 		
 		MvcResult mvcResult = mockMvc.perform(get("/pedidos")).andExpect(status().isOk()).andReturn();
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String pedidoAsJSON = objectMapper.writeValueAsString(pedidos);
-		
-		assertEquals(pedidoAsJSON,strBodyRespuesta);
+			
+		checkResponseBody(mvcResult, pedidos);
 		
 	}
 		
@@ -71,11 +57,8 @@ public class PedidoControllerTest {
 		when(pedidoServices.read(10L)).thenReturn(Optional.of(pedido1));
 		
 		MvcResult mvcResult = mockMvc.perform(get("/pedidos/10")).andExpect(status().isOk()).andReturn();
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String pedidoAsJSON = objectMapper.writeValueAsString(pedido1);
-		
-		assertEquals(pedidoAsJSON, strBodyRespuesta);
+				
+		checkResponseBody(mvcResult, pedido1);
 		
 	}
 	
@@ -86,10 +69,7 @@ public class PedidoControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/pedidos/10")).andExpect(status().isNotFound()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String pedidoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el pedido 10"));
-		
-		assertEquals(pedidoAsJSON, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el pedido 10"));
 		
 	}
 	
@@ -118,10 +98,7 @@ public class PedidoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(post("/pedidos").content(requestBody).contentType("application/json"))
 				.andExpect(status().isBadRequest()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Para crear un pedido el numero ha de ser null"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("Para crear un pedido el numero ha de ser null"));
 	}
 	
     @Test
@@ -139,11 +116,8 @@ public class PedidoControllerTest {
     	doThrow(new IllegalStateException()).when(pedidoServices).delete(10L);
     	
 		MvcResult mvcResult = mockMvc.perform(delete("/pedidos/10")).andExpect(status().isNotFound()).andReturn();
-    	
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String pedidoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el pedido 10"));
 		
-		assertEquals(pedidoAsJSON, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el pedido 10"));
     }
     
 	// **********************************************************

@@ -1,6 +1,5 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,34 +11,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sinensia.superpollo.business.model.Producto;
 import com.sinensia.superpollo.business.services.ProductoServices;
 import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @WebMvcTest(value=ProductoController.class)
-public class ProductoControllerTest {
-	
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
+public class ProductoControllerTest extends AbstractControllerTest{
+
 	@MockBean
 	private ProductoServices productoServices;
 	
@@ -60,13 +49,10 @@ public class ProductoControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/productos")).andExpect(status().isOk()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String productoAsJSON = objectMapper.writeValueAsString(productos);
-		
-		assertEquals(productoAsJSON,strBodyRespuesta);
+		checkResponseBody(mvcResult, productos);
 		
 	}
-	
+
     @Test
     public void solicitamos_productos_con_parametros() throws Exception {
 	       
@@ -79,12 +65,8 @@ public class ProductoControllerTest {
         										.param("max", "25.0"))
 	                                     .andExpect(status().isOk())
 	                                     .andReturn();
-
-        String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        String productoAsJSON = objectMapper.writeValueAsString(productos);
-
-        assertEquals(productoAsJSON, strBodyRespuesta);
         
+        checkResponseBody(mvcResult, productos);
     }
 		
 	@Test
@@ -94,10 +76,7 @@ public class ProductoControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/productos/10")).andExpect(status().isOk()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String productoAsJSON = objectMapper.writeValueAsString(producto1);
-		
-		assertEquals(productoAsJSON, strBodyRespuesta);
+		checkResponseBody(mvcResult, producto1);
 		
 	}
 	
@@ -108,10 +87,7 @@ public class ProductoControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/productos/10")).andExpect(status().isNotFound()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String productoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el producto 10"));
-		
-		assertEquals(productoAsJSON, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el producto 10"));
 		
 	}
 	
@@ -140,10 +116,7 @@ public class ProductoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(post("/productos").content(requestBody).contentType("application/json"))
 				.andExpect(status().isBadRequest()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Para crear un producto el codigo ha de ser null"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("Para crear un producto el codigo ha de ser null"));
 	}
 	
     @Test
@@ -161,11 +134,8 @@ public class ProductoControllerTest {
     	doThrow(new IllegalStateException()).when(productoServices).delete(10L);
     	
 		MvcResult mvcResult = mockMvc.perform(delete("/productos/10")).andExpect(status().isNotFound()).andReturn();
-    	
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String productoAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el producto 10"));
-		
-		assertEquals(productoAsJSON, strBodyRespuesta);
+    		
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el producto 10"));
     }
     
 	@Test
@@ -196,10 +166,7 @@ public class ProductoControllerTest {
 		
 		verify(productoServices, times(1)).update(producto1);
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el producto 10"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el producto 10"));
 		
 	}
 	
@@ -214,11 +181,8 @@ public class ProductoControllerTest {
 				.andExpect(status().isBadRequest()).andReturn();
 		
 		verify(productoServices, times(1)).update(producto1);
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Ha habido un problema en la petición."));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+				
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("Ha habido un problema en la petición."));
 		
 	}
 

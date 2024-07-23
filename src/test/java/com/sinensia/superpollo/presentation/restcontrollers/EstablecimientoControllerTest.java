@@ -1,39 +1,28 @@
 package com.sinensia.superpollo.presentation.restcontrollers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sinensia.superpollo.business.model.Establecimiento;
 import com.sinensia.superpollo.business.services.EstablecimientoServices;
 import com.sinensia.superpollo.presentation.config.ErrorHttpCustomizado;
 
 @WebMvcTest(value=EstablecimientoController.class)
-public class EstablecimientoControllerTest {
+public class EstablecimientoControllerTest extends AbstractControllerTest{
 
-	@Autowired
-	private MockMvc mockMvc;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@MockBean
 	private EstablecimientoServices establecimientoServices;
 	
@@ -53,11 +42,8 @@ public class EstablecimientoControllerTest {
 		when(establecimientoServices.getAll()).thenReturn(establecimientos);
 		
 		MvcResult mvcResult = mockMvc.perform(get("/establecimientos")).andExpect(status().isOk()).andReturn();
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String establecimientosAsJSON = objectMapper.writeValueAsString(establecimientos);
-		
-		assertEquals(establecimientosAsJSON,strBodyRespuesta);
+				
+		checkResponseBody(mvcResult, establecimientos);
 		
 	}
 	
@@ -68,10 +54,7 @@ public class EstablecimientoControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(get("/establecimientos/10")).andExpect(status().isOk()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String establecimientosAsJSON = objectMapper.writeValueAsString(establecimiento1);
-		
-		assertEquals(establecimientosAsJSON,strBodyRespuesta);
+		checkResponseBody(mvcResult, establecimiento1);
 		
 	}
 	
@@ -81,11 +64,8 @@ public class EstablecimientoControllerTest {
 		when(establecimientoServices.read(10L)).thenReturn(Optional.empty());
 		
 		MvcResult mvcResult = mockMvc.perform(get("/establecimientos/10")).andExpect(status().isNotFound()).andReturn();
-		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String establecimientosAsJSON = objectMapper.writeValueAsString(new ErrorHttpCustomizado("No se encuentra el establecimiento 10"));
-		
-		assertEquals(establecimientosAsJSON,strBodyRespuesta);
+				
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("No se encuentra el establecimiento 10"));
 		
 	}
 	
@@ -99,10 +79,7 @@ public class EstablecimientoControllerTest {
 		MvcResult mvcResult = mockMvc.perform(post("/establecimientos").content(requestBody).contentType("application/json"))
 				 	.andExpect(status().isBadRequest()).andReturn();
 		
-		String strBodyRespuesta = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		String mensajeError = objectMapper.writeValueAsString(new ErrorHttpCustomizado("Para crear un establecimiento el codigo ha de ser null"));
-		
-		assertEquals(mensajeError, strBodyRespuesta);
+		checkResponseBody(mvcResult, new ErrorHttpCustomizado("Para crear un establecimiento el codigo ha de ser null"));
 
 	}
 	
