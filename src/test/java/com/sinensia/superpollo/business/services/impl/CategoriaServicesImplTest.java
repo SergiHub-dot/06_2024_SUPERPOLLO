@@ -64,7 +64,7 @@ public class CategoriaServicesImplTest {
 			categoriaServicesImpl.create(categoria1);
 		});
 		
-		assertEquals("Para creor una categoría el id ha de ser null", exception.getMessage());
+		assertEquals("Para crear una categoría el id ha de ser null", exception.getMessage());
 	}
 	
 	@Test
