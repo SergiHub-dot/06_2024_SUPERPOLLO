@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Categoria;
@@ -22,6 +23,7 @@ import com.sinensia.superpollo.integration.repositories.ProductoPLRepository;
 import jakarta.transaction.Transactional;
 
 @Service
+@Primary
 public class ProductoServicesImpl implements ProductoServices {
 
 	@Autowired

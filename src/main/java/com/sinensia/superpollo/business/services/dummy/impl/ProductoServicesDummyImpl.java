@@ -3,13 +3,13 @@ package com.sinensia.superpollo.business.services.dummy.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.sinensia.superpollo.business.model.Categoria;
@@ -18,7 +18,6 @@ import com.sinensia.superpollo.business.model.dtos.Producto1DTO;
 import com.sinensia.superpollo.business.services.ProductoServices;
 
 @Service
-@Primary
 public class ProductoServicesDummyImpl implements ProductoServices {
 	
 	private final Map<Long, Producto> BASE_DATOS_PRODUCTOS = new HashMap<>();
@@ -90,26 +89,35 @@ public class ProductoServicesDummyImpl implements ProductoServices {
 	
 	@Override
 	public List<Producto> getBetweenPriceRange(double min, double max) {
-		// TODO
-		return null;
+		
+		return BASE_DATOS_PRODUCTOS.values().stream()
+				.filter(x -> x.getPrecio() >= min && x.getPrecio() <= max)
+				.toList();
+	
 	}
 	
 	@Override
 	public List<Producto> getBetweenDates(Date desde, Date hasta) {
-		// TODO
-		return null;
+		
+		return BASE_DATOS_PRODUCTOS.values().stream()
+				.filter(x -> x.getFechaAlta().after(desde) && x.getFechaAlta().before(hasta))
+				.toList();
 	}
 	
 	@Override
 	public List<Producto> getDescatalogados() {
-		// TODO
-		return null;
+		
+		return BASE_DATOS_PRODUCTOS.values().stream()
+				.filter(x -> x.isDescatalogado())
+				.toList();
 	}
 	
 	@Override
 	public List<Producto> getByCategoria(Categoria categoria) {
-		// TODO
-		return null;
+		
+		return BASE_DATOS_PRODUCTOS.values().stream()
+				.filter(x -> x.getCategoria().equals(categoria))
+				.toList();
 	}
 	
 	@Override
@@ -120,23 +128,48 @@ public class ProductoServicesDummyImpl implements ProductoServices {
 	@Override
 	public void variarPrecio(List<Producto> productos, double porcentaje) {
 		
-		// forEach() !
-		
-		// TODO
+		productos.stream().forEach(x -> {
+			
+			long codigoProducto = x.getCodigo();
+			double precio = BASE_DATOS_PRODUCTOS.get(codigoProducto).getPrecio();
+			double nuevoPrecio = precio + (precio * porcentaje) / 100;
+			BASE_DATOS_PRODUCTOS.get(codigoProducto).setPrecio(nuevoPrecio);
+			
+		});
 	}
 	
 	@Override
 	public void variarPrecio(long[] codigos, double porcentaje) {
 		
-		// forEach() !
-		
-		// TODO
+		Arrays.stream(codigos).forEach(x -> {
+			
+			double precio = BASE_DATOS_PRODUCTOS.get(x).getPrecio();
+			double nuevoPrecio = precio + (precio * porcentaje) / 100;
+			BASE_DATOS_PRODUCTOS.get(x).setPrecio(nuevoPrecio);
+			
+		});
 	}
 	
 	@Override
 	public Map<Categoria, Integer> getEstadisticaNumeroProductosPorCategoria() {
-		// TODO
-		return null;
+		
+		Map<Categoria, Integer> estadistica = new HashMap<>();
+		
+		BASE_DATOS_PRODUCTOS.values().stream().forEach(x -> {
+			
+			Categoria categoria = x.getCategoria();
+			
+			if(!estadistica.containsKey(categoria)) {
+				estadistica.put(categoria, 1);
+			} else {
+				int cantidad = estadistica.get(categoria);
+				cantidad += 1;
+				estadistica.replace(categoria, cantidad);
+			}
+			
+		});
+		
+		return estadistica;
 	}
 
 	@Override
@@ -191,8 +224,8 @@ public class ProductoServicesDummyImpl implements ProductoServices {
 		producto2.setFechaAlta(fecha2);
 		producto2.setNombre("Patas Bravas");
 		producto2.setDescripcion("Deliciosas patatas Dummy");
-		producto2.setPrecio(7.0);
-		producto2.setDescatalogado(false);
+		producto2.setPrecio(10.0);
+		producto2.setDescatalogado(true);
 		
 		Producto producto3 = new Producto();
 		producto3.setCodigo(103L);
