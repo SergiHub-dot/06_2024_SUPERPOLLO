@@ -3,6 +3,7 @@ package com.sinensia.superpollo.business.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.sinensia.superpollo.business.model.EstadoPedido;
 import com.sinensia.superpollo.business.model.Pedido;
 import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
@@ -19,6 +20,12 @@ public interface PedidoServices {
 	Long create(Pedido pedido);											
 	
 	Optional<Pedido> read(Long numero);									
+	
+	/**
+	 * Lanza IllegalStateEsception si se intenta una transición entre estados no permitida
+	 * 
+	 */
+	void updateEstado(Long numero, EstadoPedido estado);
 	
 	/**
 	 * Si el codigo del pedido no existe lanza IllegalStateException

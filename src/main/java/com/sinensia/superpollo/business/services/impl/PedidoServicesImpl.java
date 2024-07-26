@@ -16,6 +16,7 @@ import com.sinensia.superpollo.business.model.dtos.Pedido1DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido2DTO;
 import com.sinensia.superpollo.business.model.dtos.Pedido3DTO;
 import com.sinensia.superpollo.business.services.PedidoServices;
+import com.sinensia.superpollo.integration.model.EstadoPedidoPL;
 import com.sinensia.superpollo.integration.model.PedidoPL;
 import com.sinensia.superpollo.integration.repositories.PedidoPLRepository;
 
@@ -58,6 +59,33 @@ public class PedidoServicesImpl implements PedidoServices{
 		}
 		
 		return Optional.ofNullable(pedido);
+	}
+	
+	@Override
+	@Transactional
+	public void updateEstado(Long numero, EstadoPedido estado) {
+		
+		Optional<PedidoPL> optional = pedidoPLRepository.findById(numero);
+		
+		if(optional.isEmpty()) {
+			throw new IllegalStateException("No existe el pedido " + numero);
+		}
+		
+		EstadoPedidoPL estadoPedidoPLActual = optional.get().getEstado();
+		EstadoPedidoPL estadoPedidoPLNuevo = EstadoPedidoPL.valueOf(estado.toString());
+
+		boolean condicion1 = estadoPedidoPLNuevo.equals(EstadoPedidoPL.NUEVO);
+		boolean condicion2 = estadoPedidoPLNuevo.equals(EstadoPedidoPL.EN_PROCESO) && !estadoPedidoPLActual.equals(EstadoPedidoPL.NUEVO);
+		boolean condicion3 = estadoPedidoPLNuevo.equals(EstadoPedidoPL.PENDIENTE_ENTREGA) && !estadoPedidoPLActual.equals(EstadoPedidoPL.EN_PROCESO);
+		boolean condicion4 = estadoPedidoPLNuevo.equals(EstadoPedidoPL.SERVIDO) && !estadoPedidoPLActual.equals(EstadoPedidoPL.PENDIENTE_ENTREGA);
+		boolean condicion5 = estadoPedidoPLNuevo.equals(EstadoPedidoPL.CANCELADO) && estadoPedidoPLActual.equals(EstadoPedidoPL.CANCELADO)|| estadoPedidoPLActual.equals(EstadoPedidoPL.SERVIDO);
+		
+		if(condicion1 || condicion2 || condicion3 || condicion4 || condicion5) {
+			throw new IllegalStateException("No se puede pasar un pedido de " + estadoPedidoPLActual + " a " + estadoPedidoPLNuevo);
+		}
+		
+		optional.get().setEstado(estadoPedidoPLNuevo);
+
 	}
 
 	@Override
@@ -134,5 +162,4 @@ public class PedidoServicesImpl implements PedidoServices{
 	public List<Pedido3DTO> getPedido3DTOs() {
 		return pedidoPLRepository.getPedido3DTO();
 	}
-
 }
